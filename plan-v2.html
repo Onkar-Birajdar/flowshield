@@ -1,0 +1,3221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowShield — Complete Engineering Document v2.0</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Fira+Code:wght@300;400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+    <style>
+:root{
+  --bg:#f9f7f3;
+  --s1:#f2ede5;
+  --s2:#e8e1d6;
+  --ink:#16140f;
+  --mid:#5a5445;
+  --dim:#9a9080;
+  --rule:#ddd7cc;
+  --rule2:#ede8e0;
+  --em:#c44b1a;        /* ember orange */
+  --em-l:#fff4ef;
+  --em-d:#7a2a08;
+  --teal:#0c7a6e;
+  --teal-l:#edfaf8;
+  --teal-d:#064d44;
+  --blue:#1a3f7a;
+  --blue-l:#eef3fc;
+  --green:#155c2f;
+  --green-l:#edfbf1;
+  --green-s:#bbf7d0;
+  --red:#991515;
+  --red-l:#fff0f0;
+  --amber:#8a4f08;
+  --amber-l:#fffaeb;
+  --purple:#4e1d96;
+  --purple-l:#f5f0ff;
+  --code:#1a1714;
+  --c1:#86efac;  /* strings/success */
+  --c2:#7dd3fc;  /* types/keywords */
+  --c3:#fde68a;  /* numbers */
+  --c4:#94a3b8;  /* comments */
+  --c5:#f0abfc;  /* special */
+  --c6:#fb923c;  /* classes */
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:'Bitter',serif;
+  font-size:14px;
+  line-height:1.8;
+  display:grid;
+  grid-template-columns:260px 1fr;
+  min-height:100vh;
+}
+
+/* ─────────── SIDEBAR ─────────── */
+.sb{
+  position:sticky;top:0;height:100vh;
+  overflow-y:auto;scrollbar-width:thin;
+  scrollbar-color:var(--rule) transparent;
+  background:var(--ink);
+  border-right:none;
+  display:flex;flex-direction:column;
+  font-family:'Fira Code',monospace;
+}
+.sb-logo{
+  padding:28px 20px 22px;
+  border-bottom:1px solid #252218;
+}
+.sb-name{
+  font-family:'Manrope',sans-serif;
+  font-size:18px;font-weight:800;
+  color:#f0ece4;letter-spacing:.01em;
+}
+.sb-name span{color:#fb923c;}
+.sb-tagline{font-size:9px;color:#3d3928;letter-spacing:.12em;text-transform:uppercase;margin-top:3px;}
+.sb-status{
+  font-size:9px;color:var(--c1);
+  margin-top:8px;
+  display:flex;align-items:center;gap:6px;
+}
+.sb-status::before{
+  content:'';width:6px;height:6px;border-radius:50%;
+  background:var(--c1);display:block;
+  box-shadow:0 0 6px var(--c1);
+}
+
+.sb-nav{flex:1;padding:12px 0;}
+.sb-group{margin-bottom:2px;}
+.sb-group-label{
+  font-size:8px;letter-spacing:.22em;text-transform:uppercase;
+  color:#2e2b1e;padding:10px 20px 4px;
+}
+.sbn{
+  display:flex;align-items:center;gap:0;
+  text-decoration:none;
+  border-left:3px solid transparent;
+  transition:all .12s;
+}
+.sbn:hover .sbn-inner{background:#1c1910;}
+.sbn.active{border-left-color:var(--c6);}
+.sbn.active .sbn-num{color:var(--c6);}
+.sbn.active .sbn-text{color:#f0ece4;}
+.sbn-num{
+  width:44px;flex-shrink:0;
+  font-size:10px;font-weight:600;
+  color:#2e2b1e;
+  display:flex;align-items:center;justify-content:center;
+  padding:10px 0;
+  transition:color .12s;
+}
+.sbn-inner{flex:1;padding:10px 12px 10px 0;border-bottom:1px solid #1a1810;}
+.sbn-text{
+  display:block;font-size:10px;color:#5a5440;
+  letter-spacing:.04em;line-height:1.3;transition:color .12s;
+}
+.sbn-sub{font-size:9px;color:#2e2b1e;margin-top:2px;}
+
+.sb-foot{
+  padding:16px 20px;border-top:1px solid #1a1810;
+  font-size:9px;color:#2e2b1e;line-height:1.8;
+}
+.sb-foot span{color:#3d3928;}
+
+/* ─────────── MAIN ─────────── */
+.main{min-width:0;}
+
+/* ─────────── MASTHEAD ─────────── */
+.mast{
+  background:var(--ink);
+  padding:80px 64px 64px;
+  position:relative;overflow:hidden;
+}
+.mast::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 70% 60% at 90% 10%,rgba(251,146,60,.08) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 50% at 0% 100%,rgba(12,122,110,.07) 0%,transparent 60%);
+}
+.mast-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);
+  background-size:40px 40px;
+}
+.mast-inner{position:relative;max-width:860px;}
+.mast-eye{
+  font-family:'Fira Code',monospace;
+  font-size:10px;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--c6);margin-bottom:24px;
+  display:flex;align-items:center;gap:12px;
+}
+.mast-eye::before{content:'';width:36px;height:1px;background:var(--c6);}
+.mast h1{
+  font-family:'Manrope',sans-serif;
+  font-size:clamp(36px,5.5vw,62px);
+  font-weight:800;letter-spacing:-.03em;
+  color:#f0ece4;line-height:.95;margin-bottom:20px;
+}
+.mast h1 em{color:var(--c6);font-style:normal;}
+.mast h1 .sub{
+  display:block;
+  font-size:.45em;font-weight:400;
+  color:#3d3928;letter-spacing:.01em;
+  margin-top:12px;line-height:1.4;
+}
+.mast-desc{
+  font-size:16px;color:#7a7060;
+  max-width:640px;line-height:1.75;
+  margin-bottom:44px;
+}
+.mast-desc strong{color:#a09080;}
+.mast-meta{
+  display:flex;gap:0;
+  border:1px solid #252218;
+  width:fit-content;
+}
+.mm{
+  padding:14px 24px;
+  border-right:1px solid #252218;
+}
+.mm:last-child{border-right:none;}
+.mm-val{
+  font-family:'Manrope',sans-serif;
+  font-size:22px;font-weight:800;
+  color:var(--c6);display:block;line-height:1;margin-bottom:4px;
+}
+.mm-lbl{
+  font-family:'Fira Code',monospace;
+  font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:#2e2b1e;
+}
+
+/* ─────────── SECTIONS ─────────── */
+.sec{padding:64px 64px 0;margin-top:64px;border-top:1px solid var(--rule2);}
+.sec:first-of-type{margin-top:0;border-top:none;}
+.sec-eye{
+  font-family:'Fira Code',monospace;
+  font-size:9px;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--em);margin-bottom:8px;
+  display:flex;align-items:center;gap:10px;
+}
+.sec-eye::before{content:'';width:24px;height:2px;background:var(--em);display:block;}
+.sec-title{
+  font-family:'Manrope',sans-serif;
+  font-size:28px;font-weight:800;letter-spacing:-.02em;
+  color:var(--ink);line-height:1.1;margin-bottom:10px;
+}
+.sec-sub{
+  font-family:'Fira Code',monospace;
+  font-size:11px;color:var(--dim);letter-spacing:.06em;
+  padding-bottom:24px;border-bottom:1px solid var(--rule);margin-bottom:28px;
+}
+.sec-sub strong{color:var(--em);font-weight:500;}
+
+/* ─────────── PROSE ─────────── */
+p{font-size:14px;color:var(--mid);line-height:1.85;margin-bottom:14px;max-width:760px;}
+p strong{color:var(--ink);}
+p:last-child{margin-bottom:0;}
+
+/* ─────────── BOUNDARY BOX ─────────── */
+.boundary{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:1px;background:var(--rule);border:1px solid var(--rule);
+  margin:24px 0;
+}
+.bnd{background:var(--bg);padding:24px;}
+.bnd-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'Fira Code',monospace;
+  font-size:10px;letter-spacing:.15em;text-transform:uppercase;
+  font-weight:600;padding:4px 12px;margin-bottom:12px;
+}
+.bnd-badge.gateway{background:var(--em-l);color:var(--em);}
+.bnd-badge.processor{background:var(--teal-l);color:var(--teal);}
+.bnd-title{
+  font-family:'Manrope',sans-serif;font-weight:700;font-size:15px;
+  margin-bottom:10px;
+}
+.bnd-list{list-style:none;display:flex;flex-direction:column;gap:4px;}
+.bnd-list li{
+  font-family:'Fira Code',monospace;font-size:11.5px;color:var(--mid);
+  display:flex;align-items:flex-start;gap:8px;line-height:1.55;
+}
+.bnd-list li::before{content:'→';color:var(--em);flex-shrink:0;}
+.bnd-list li.no{color:var(--dim);}
+.bnd-list li.no::before{content:'✗';color:var(--dim);}
+.bnd-list li.teal::before{color:var(--teal);}
+
+/* ─────────── HLD DIAGRAM ─────────── */
+.diagram{
+  background:var(--code);
+  border:1px solid #252218;
+  padding:36px 40px;
+  overflow-x:auto;
+  font-family:'Fira Code',monospace;
+  font-size:11.5px;line-height:1.55;
+  margin:24px 0;
+}
+.d-title{color:#3d3928;font-size:9px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:20px;}
+.d-c{color:var(--c4);font-style:italic;}
+.d-n{color:var(--c6);}
+.d-b{color:var(--c2);}
+.d-g{color:var(--c1);}
+.d-y{color:var(--c3);}
+.d-p{color:var(--c5);}
+.d-w{color:#f0ece4;}
+.d-r{color:#f87171;}
+
+/* ─────────── TECH TABLE ─────────── */
+.tt{width:100%;border-collapse:collapse;font-size:13px;margin:20px 0;}
+.tt th{
+  background:var(--ink);color:#f0ece4;
+  font-family:'Manrope',sans-serif;font-weight:600;
+  font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  padding:11px 16px;text-align:left;
+}
+.tt td{
+  padding:11px 16px;border-bottom:1px solid var(--rule2);
+  vertical-align:top;color:var(--mid);
+}
+.tt td:first-child{
+  font-family:'Fira Code',monospace;font-size:12px;
+  color:var(--ink);font-weight:500;
+}
+.tt tr:nth-child(even) td{background:var(--s1);}
+.tt-tag{
+  display:inline-block;
+  font-family:'Fira Code',monospace;font-size:10px;
+  padding:1px 7px;margin:1px;
+  background:var(--s2);border:1px solid var(--rule);color:var(--mid);
+}
+.tt-tag.p{background:var(--em-l);border-color:#fbd0be;color:var(--em-d);}
+.tt-tag.t{background:var(--teal-l);border-color:#99f6e4;color:var(--teal-d);}
+.verdict-yes{color:var(--green)!important;font-weight:600!important;}
+.verdict-no{color:var(--red)!important;}
+.verdict-ok{color:var(--amber)!important;}
+
+/* ─────────── LLD COMPONENT ─────────── */
+.lld-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:1px;background:var(--rule);border:1px solid var(--rule);
+  margin:20px 0;
+}
+.lld-card{background:var(--bg);padding:22px;}
+.lld-module{
+  font-family:'Fira Code',monospace;
+  font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--em);margin-bottom:6px;
+}
+.lld-name{
+  font-family:'Manrope',sans-serif;font-weight:700;font-size:14px;
+  margin-bottom:10px;display:flex;align-items:center;gap:8px;
+}
+.lld-name code{
+  font-family:'Fira Code',monospace;font-size:11px;
+  background:var(--s2);padding:1px 6px;color:var(--em-d);font-weight:400;
+}
+.lld-items{display:flex;flex-direction:column;gap:4px;}
+.lld-item{
+  font-family:'Fira Code',monospace;font-size:11px;
+  color:var(--mid);display:flex;align-items:flex-start;gap:6px;line-height:1.55;
+}
+.lld-item::before{content:'·';color:var(--em);flex-shrink:0;font-weight:700;}
+.lld-dep{
+  margin-top:10px;padding-top:10px;border-top:1px solid var(--rule2);
+  font-family:'Fira Code',monospace;font-size:10px;color:var(--dim);
+}
+
+/* ─────────── CODE BLOCK ─────────── */
+.code{
+  background:var(--code);border:1px solid #252218;
+  padding:28px 32px;overflow-x:auto;
+  font-family:'Fira Code',monospace;font-size:11.5px;line-height:1.6;
+  margin:16px 0;
+}
+.code-title{
+  font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  color:#2e2b1e;margin-bottom:16px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.code-file{color:#3d3928;}
+.c-kw{color:var(--c5);}
+.c-cls{color:var(--c6);}
+.c-str{color:var(--c3);}
+.c-cm{color:var(--c4);font-style:italic;}
+.c-ty{color:var(--c2);}
+.c-fn{color:var(--c1);}
+.c-num{color:var(--c3);}
+.c-w{color:#f0ece4;}
+
+/* ─────────── SCALE ANALYSIS ─────────── */
+.scale-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--rule);border:1px solid var(--rule);margin:20px 0;
+}
+.sc-card{background:var(--bg);padding:22px;}
+.sc-comp{
+  font-family:'Fira Code',monospace;
+  font-size:9px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--em);margin-bottom:6px;
+}
+.sc-title{
+  font-family:'Manrope',sans-serif;font-weight:700;font-size:14px;
+  margin-bottom:10px;
+}
+.sc-math{
+  background:var(--s2);border:1px solid var(--rule);
+  padding:10px 14px;
+  font-family:'Fira Code',monospace;font-size:11px;
+  color:var(--ink);line-height:1.7;margin:8px 0;
+}
+.sc-math .eq{color:var(--em);font-weight:600;}
+.sc-math .ok{color:var(--green);}
+.sc-math .warn{color:var(--amber);}
+.sc-math .bad{color:var(--red);}
+.sc-note{font-size:12px;color:var(--mid);line-height:1.6;}
+.sc-note strong{color:var(--ink);}
+
+/* ─────────── FAILURE MODE ─────────── */
+.fm-list{display:flex;flex-direction:column;gap:10px;margin:20px 0;}
+.fm{border:1px solid var(--rule);overflow:hidden;}
+.fm-hdr{
+  display:grid;grid-template-columns:56px 1fr auto;
+  background:var(--s1);border-bottom:1px solid var(--rule2);
+}
+.fm-icon{
+  background:var(--ink);color:#f0ece4;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;border-right:1px solid var(--rule2);
+}
+.fm-meta{padding:14px 18px;}
+.fm-title{font-family:'Manrope',sans-serif;font-weight:700;font-size:14px;margin-bottom:2px;}
+.fm-trigger{font-family:'Fira Code',monospace;font-size:10px;color:var(--dim);}
+.fm-sev{
+  padding:14px 16px;display:flex;align-items:center;
+  font-family:'Fira Code',monospace;font-size:10px;
+  font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+}
+.sev-p0{color:var(--red);}
+.sev-p1{color:var(--amber);}
+.sev-p2{color:var(--blue);}
+.fm-body{padding:18px 20px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+.fm-col-title{
+  font-family:'Fira Code',monospace;font-size:9px;
+  letter-spacing:.15em;text-transform:uppercase;
+  color:var(--em);margin-bottom:8px;
+}
+.fm-col-body{font-size:12.5px;color:var(--mid);line-height:1.65;}
+.fm-col-body strong{color:var(--ink);}
+.fm-col-body code{
+  background:var(--code);color:var(--c6);
+  padding:0 4px;font-family:'Fira Code',monospace;font-size:10.5px;
+}
+
+/* ─────────── SECURITY ─────────── */
+.sec-layer{
+  border:1px solid var(--rule);margin:20px 0;overflow:hidden;
+}
+.sl-hdr{
+  background:var(--ink);padding:16px 22px;
+  display:flex;align-items:center;gap:14px;
+}
+.sl-step{
+  font-family:'Manrope',sans-serif;font-size:22px;font-weight:800;
+  color:#252218;
+}
+.sl-name{font-family:'Manrope',sans-serif;font-weight:700;font-size:15px;color:#f0ece4;}
+.sl-badge{
+  margin-left:auto;font-family:'Fira Code',monospace;
+  font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+  padding:3px 10px;
+}
+.sl-core{background:var(--em-l);color:var(--em);}
+.sl-extra{background:var(--teal-l);color:var(--teal);}
+.sl-body{padding:20px 22px;display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.sl-col-title{
+  font-family:'Fira Code',monospace;font-size:9px;
+  letter-spacing:.15em;text-transform:uppercase;color:var(--em);margin-bottom:8px;
+}
+.sl-col-body{font-size:12.5px;color:var(--mid);line-height:1.7;}
+.sl-col-body strong{color:var(--ink);}
+.sl-col-body code{
+  background:var(--code);color:var(--c6);
+  padding:0 4px;font-family:'Fira Code',monospace;font-size:10.5px;
+}
+
+/* ─────────── PHASE SYSTEM ─────────── */
+.phase-wrap{display:flex;flex-direction:column;gap:0;border:1px solid var(--rule);}
+.phase{border-bottom:1px solid var(--rule2);}
+.phase:last-child{border-bottom:none;}
+.phase-hdr{
+  display:grid;grid-template-columns:68px 1fr auto;
+  background:var(--s1);border-bottom:1px solid var(--rule2);
+}
+.ph-n{
+  font-family:'Manrope',sans-serif;font-size:24px;font-weight:800;
+  color:var(--rule);display:flex;align-items:center;justify-content:center;
+  border-right:1px solid var(--rule2);
+}
+.ph-meta{padding:14px 18px;}
+.ph-title{font-family:'Manrope',sans-serif;font-weight:700;font-size:15px;margin-bottom:2px;}
+.ph-desc{font-family:'Fira Code',monospace;font-size:10px;color:var(--dim);}
+.ph-dur{
+  padding:14px 18px;
+  font-family:'Fira Code',monospace;font-size:13px;
+  color:var(--green);display:flex;align-items:center;font-weight:600;
+}
+.phase-body{padding:20px 22px;}
+
+.ticket{
+  border:1px solid var(--rule2);margin-bottom:10px;overflow:hidden;background:var(--bg);
+}
+.ticket:last-child{margin-bottom:0;}
+.t-hdr{
+  background:var(--s2);padding:9px 14px;
+  display:flex;align-items:center;gap:10px;
+  border-bottom:1px solid var(--rule2);
+}
+.t-id{
+  font-family:'Fira Code',monospace;font-size:10px;
+  color:var(--green);font-weight:600;
+}
+.t-title{
+  font-family:'Manrope',sans-serif;font-size:13px;font-weight:600;
+}
+.t-badge{
+  margin-left:auto;font-family:'Fira Code',monospace;
+  font-size:9px;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;
+}
+.tb-feat{background:var(--blue-l);color:var(--blue);}
+.tb-infra{background:var(--amber-l);color:var(--amber);}
+.tb-test{background:var(--green-l);color:var(--green);}
+.tb-sec{background:var(--red-l);color:var(--red);}
+.t-body{padding:14px;}
+.t-ac{font-size:12.5px;color:var(--mid);line-height:1.65;}
+.t-ac ul{padding-left:16px;margin-top:6px;}
+.t-ac li{margin-bottom:4px;}
+.t-ac strong{color:var(--ink);}
+.t-ac code{
+  background:var(--code);color:var(--c6);
+  padding:0 4px;font-family:'Fira Code',monospace;font-size:10.5px;
+}
+.phase-milestone{
+  background:var(--ink);color:#f0ece4;
+  padding:12px 16px;margin-top:14px;
+  font-family:'Fira Code',monospace;font-size:12px;
+  display:flex;align-items:center;gap:10px;
+}
+.phase-milestone::before{content:'✦';color:var(--c6);}
+
+/* ─────────── OBSERVABILITY ─────────── */
+.red-grid{
+  display:grid;grid-template-columns:1fr 1fr 1fr;
+  gap:1px;background:var(--rule);border:1px solid var(--rule);margin:20px 0;
+}
+.red-card{background:var(--bg);padding:22px;}
+.red-label{
+  font-family:'Manrope',sans-serif;font-size:24px;font-weight:800;
+  margin-bottom:6px;
+}
+.red-r{color:var(--em);}
+.red-e{color:var(--red);}
+.red-d{color:var(--teal);}
+.red-name{
+  font-family:'Fira Code',monospace;font-size:9px;
+  letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:12px;
+}
+.red-metrics{display:flex;flex-direction:column;gap:6px;}
+.red-metric{
+  font-family:'Fira Code',monospace;font-size:10.5px;
+  color:var(--mid);line-height:1.5;
+}
+.red-metric code{color:var(--ink);background:var(--s2);padding:0 4px;}
+
+/* ─────────── AWS DEPLOY ─────────── */
+.aws-tier{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:1px;background:var(--rule);border:1px solid var(--rule);margin:20px 0;
+}
+.aws-card{background:var(--bg);padding:18px;}
+.aws-service{
+  font-family:'Fira Code',monospace;font-size:9px;
+  letter-spacing:.15em;text-transform:uppercase;color:var(--em);margin-bottom:6px;
+}
+.aws-name{font-family:'Manrope',sans-serif;font-weight:700;font-size:13px;margin-bottom:6px;}
+.aws-spec{
+  font-family:'Fira Code',monospace;font-size:10px;
+  color:var(--teal);background:var(--teal-l);
+  padding:3px 8px;display:inline-block;margin-bottom:8px;
+}
+.aws-note{font-size:12px;color:var(--mid);line-height:1.55;}
+.aws-cost{
+  margin-top:8px;font-family:'Fira Code',monospace;
+  font-size:10px;color:var(--green);font-weight:600;
+}
+
+/* ─────────── CALLOUTS ─────────── */
+.callout{
+  padding:16px 20px;margin:16px 0;font-size:13px;line-height:1.7;
+  border-left:4px solid;
+}
+.callout.warn{border-color:var(--amber);background:var(--amber-l);color:var(--amber);}
+.callout.warn strong{color:var(--amber-d,#6b3600);}
+.callout.good{border-color:var(--teal);background:var(--teal-l);color:var(--teal-d);}
+.callout.good strong{color:var(--teal-d);}
+.callout.info{border-color:var(--blue);background:var(--blue-l);color:var(--blue);}
+.callout.info strong{color:var(--blue);}
+.callout.critical{border-color:var(--red);background:var(--red-l);color:var(--red);}
+.callout.critical strong{color:var(--red);}
+
+/* ─────────── REPO STRUCTURE ─────────── */
+.repo{
+  background:var(--code);border:1px solid #252218;
+  padding:28px 32px;
+  font-family:'Fira Code',monospace;font-size:11.5px;line-height:1.7;
+  margin:16px 0;color:var(--c4);
+}
+.repo .dir{color:var(--c2);}
+.repo .file{color:#f0ece4;}
+.repo .note{color:var(--c4);font-style:italic;}
+.repo .em{color:var(--c6);}
+.repo .teal{color:var(--c1);}
+
+/* ─────────── ALERT TABLE ─────────── */
+.at{width:100%;border-collapse:collapse;font-size:12.5px;margin:16px 0;}
+.at th{
+  background:var(--ink);color:#f0ece4;
+  font-family:'Fira Code',monospace;font-size:9px;
+  letter-spacing:.12em;text-transform:uppercase;
+  padding:10px 14px;text-align:left;
+}
+.at td{padding:9px 14px;border-bottom:1px solid var(--rule2);color:var(--mid);}
+.at td:first-child{font-family:'Fira Code',monospace;font-size:11px;color:var(--ink);}
+.at tr:nth-child(even) td{background:var(--s1);}
+.p0{color:var(--red)!important;font-weight:700!important;}
+.p1{color:var(--amber)!important;font-weight:600!important;}
+.p2{color:var(--blue)!important;}
+
+footer{
+  background:var(--ink);
+  padding:36px 64px;
+  font-family:'Fira Code',monospace;font-size:10px;
+  color:#252218;text-align:center;line-height:1.9;
+  border-top:3px solid var(--em);
+  grid-column:2;
+}
+
+@media(max-width:860px){
+  body{grid-template-columns:1fr;}
+  .sb{display:none;}
+  .mast,.sec,footer{padding-left:24px;padding-right:24px;}
+  .boundary,.lld-grid,.scale-grid,.red-grid,.aws-tier{grid-template-columns:1fr;}
+  .fm-body,.sl-body{grid-template-columns:1fr;}
+}
+
+    </style>
+</head>
+<body>
+
+<!-- ═══════════════════ SIDEBAR ═══════════════════ -->
+<nav class="sb">
+    <div class="sb-logo">
+        <div class="sb-name">Flow<span>Shield</span></div>
+        <div class="sb-tagline">Complete Engineering Document v2.0</div>
+        <div class="sb-status">Production-ready architecture</div>
+    </div>
+    <div class="sb-nav">
+        <div class="sb-group">
+            <div class="sb-group-label">Architecture</div>
+            <a href="#s1" class="sbn active">
+                <div class="sbn-num">01</div>
+                <div class="sbn-inner"><span class="sbn-text">System Boundaries</span>
+                    <div class="sbn-sub">Two modules, one repo</div>
+                </div>
+            </a>
+            <a href="#s2" class="sbn">
+                <div class="sbn-num">02</div>
+                <div class="sbn-inner"><span class="sbn-text">HLD Diagram</span>
+                    <div class="sbn-sub">Full system view</div>
+                </div>
+            </a>
+            <a href="#s3" class="sbn">
+                <div class="sbn-num">03</div>
+                <div class="sbn-inner"><span class="sbn-text">LLD Diagram</span>
+                    <div class="sbn-sub">Component-level detail</div>
+                </div>
+            </a>
+            <a href="#s4" class="sbn">
+                <div class="sbn-num">04</div>
+                <div class="sbn-inner"><span class="sbn-text">Tech Stack</span>
+                    <div class="sbn-sub">Every choice justified</div>
+                </div>
+            </a>
+            <a href="#s5" class="sbn">
+                <div class="sbn-num">05</div>
+                <div class="sbn-inner"><span class="sbn-text">Data Model</span>
+                    <div class="sbn-sub">Final schema + indexes</div>
+                </div>
+            </a>
+            <a href="#s6" class="sbn">
+                <div class="sbn-num">06</div>
+                <div class="sbn-inner"><span class="sbn-text">API Design</span>
+                    <div class="sbn-sub">All endpoints</div>
+                </div>
+            </a>
+        </div>
+        <div class="sb-group">
+            <div class="sb-group-label">Engineering Depth</div>
+            <a href="#s7" class="sbn">
+                <div class="sbn-num">07</div>
+                <div class="sbn-inner"><span class="sbn-text">Scale Analysis</span>
+                    <div class="sbn-sub">Math at 10K RPS</div>
+                </div>
+            </a>
+            <a href="#s8" class="sbn">
+                <div class="sbn-num">08</div>
+                <div class="sbn-inner"><span class="sbn-text">Failure Modes</span>
+                    <div class="sbn-sub">6 deep-dive scenarios</div>
+                </div>
+            </a>
+            <a href="#s9" class="sbn">
+                <div class="sbn-num">09</div>
+                <div class="sbn-inner"><span class="sbn-text">Security Layer</span>
+                    <div class="sbn-sub">IP throttle + abuse</div>
+                </div>
+            </a>
+            <a href="#s10" class="sbn">
+                <div class="sbn-num">10</div>
+                <div class="sbn-inner"><span class="sbn-text">Observability</span>
+                    <div class="sbn-sub">RED metrics + alerts</div>
+                </div>
+            </a>
+        </div>
+        <div class="sb-group">
+            <div class="sb-group-label">Build & Ship</div>
+            <a href="#s11" class="sbn">
+                <div class="sbn-num">11</div>
+                <div class="sbn-inner"><span class="sbn-text">Repo Structure</span>
+                    <div class="sbn-sub">Monorepo layout</div>
+                </div>
+            </a>
+            <a href="#s12" class="sbn">
+                <div class="sbn-num">12</div>
+                <div class="sbn-inner"><span class="sbn-text">Phases 1–6</span>
+                    <div class="sbn-sub">Detailed implementation</div>
+                </div>
+            </a>
+            <a href="#s13" class="sbn">
+                <div class="sbn-num">13</div>
+                <div class="sbn-inner"><span class="sbn-text">AWS Deployment</span>
+                    <div class="sbn-sub">Free tier, live URL</div>
+                </div>
+            </a>
+            <a href="#s14" class="sbn">
+                <div class="sbn-num">14</div>
+                <div class="sbn-inner"><span class="sbn-text">Resume Bullets</span>
+                    <div class="sbn-sub">Final copy-paste</div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="sb-foot">
+        <span>Stack:</span> Java 17 · Spring Boot 3<br>
+        <span>React 18 · Vite · Tailwind</span><br>
+        <span>PostgreSQL · Redis · SQS</span><br>
+        <span>AWS EC2 · RDS · CloudFront</span>
+    </div>
+</nav>
+
+<!-- ═══════════════════ MAIN ═══════════════════ -->
+<main class="main">
+
+    <!-- MASTHEAD -->
+    <div class="mast">
+        <div class="mast-grid"></div>
+        <div class="mast-inner">
+            <div class="mast-eye">Final Complete Document — Mentor Feedback Addressed</div>
+            <h1>
+                <em>FlowShield</em> v2.0
+                <span class="sub">Rate-Limited Distributed Task Processing Platform<br>
+      with Security Gateway, Scale Analysis, and AWS Deployment</span>
+            </h1>
+            <p class="mast-desc">
+                Two clearly bounded modules. Full HLD + LLD. Scale math at 10K RPS.
+                Six failure mode deep-dives. Security layer. RED metrics. Six implementation phases.
+                <strong>Live on AWS with a URL you can put in your resume.</strong>
+            </p>
+            <div class="mast-meta">
+                <div class="mm"><span class="mm-val">2</span>
+                    <div class="mm-lbl">Modules</div>
+                </div>
+                <div class="mm"><span class="mm-val">6</span>
+                    <div class="mm-lbl">Failure Modes</div>
+                </div>
+                <div class="mm"><span class="mm-val">10K</span>
+                    <div class="mm-lbl">RPS Modelled</div>
+                </div>
+                <div class="mm"><span class="mm-val">6</span>
+                    <div class="mm-lbl">Build Phases</div>
+                </div>
+                <div class="mm"><span class="mm-val">AWS</span>
+                    <div class="mm-lbl">Live Deploy</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════
+         S1 — SYSTEM BOUNDARIES
+    ═══════════════════════════════════════════════════ -->
+    <section class="sec" id="s1">
+        <div class="sec-eye">Section 01</div>
+        <div class="sec-title">System Boundaries — Two Modules, One Repo</div>
+        <div class="sec-sub">Addressing mentor feedback: <strong>"FlowShield is mixed with job execution. That's
+            messy."</strong> This is the fix.
+        </div>
+
+        <p>The mentor's critique was correct: the previous doc blurred FlowShield (the gateway/protection layer) with
+            the job processing system (execution, workers, scheduling). They solve different problems, they scale
+            differently, and they fail differently. They must be conceptually separate — even if they live in one
+            repository.</p>
+        <p>The rule: <strong>FlowShield module owns everything that happens before a job is accepted into the system.
+            The Processor module owns everything that happens after.</strong> The boundary is the database write of a
+            new QUEUED job.</p>
+
+        <div class="boundary">
+            <div class="bnd">
+                <div class="bnd-badge gateway">🛡 Module 1</div>
+                <div class="bnd-title">flowshield-gateway</div>
+                <p style="font-size:12.5px;color:var(--mid);margin-bottom:12px;max-width:none;">The API surface.
+                    Everything that protects the system from abuse and guarantees correctness at the entry point.</p>
+                <ul class="bnd-list">
+                    <li>Tenant authentication (API key → tenant resolution)</li>
+                    <li>IP-based throttling (per-IP rate window)</li>
+                    <li>Per-tenant token bucket rate limiting (Redis Lua)</li>
+                    <li>Idempotency enforcement (Redis SETNX + DB constraint)</li>
+                    <li>Request validation (payload schema, required fields)</li>
+                    <li>Abuse detection (burst scoring, suspicious patterns)</li>
+                    <li>Job submission API (<code>POST /api/v1/jobs</code>)</li>
+                    <li>Job status polling (<code>GET /api/v1/jobs/{id}</code>)</li>
+                    <li>Admin API (tenant management, quota config)</li>
+                    <li class="teal">Publishes to SQS queue on acceptance</li>
+                </ul>
+                <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--rule2);">
+                    <div style="font-family:'Fira Code',monospace;font-size:9px;letter-spacing:.12em;color:var(--dim);text-transform:uppercase;margin-bottom:6px;">
+                        Explicitly NOT in this module
+                    </div>
+                    <ul class="bnd-list">
+                        <li class="no">Job execution logic</li>
+                        <li class="no">Worker thread management</li>
+                        <li class="no">Retry / backoff logic</li>
+                        <li class="no">Watchdog / recovery</li>
+                        <li class="no">Priority scheduling</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="bnd">
+                <div class="bnd-badge processor">⚙ Module 2</div>
+                <div class="bnd-title">flowshield-processor</div>
+                <p style="font-size:12.5px;color:var(--mid);margin-bottom:12px;max-width:none;">The execution engine.
+                    Consumes from SQS, runs jobs, handles failures, ensures at-least-once delivery.</p>
+                <ul class="bnd-list">
+                    <li class="teal">Consumes from SQS queue</li>
+                    <li>Writes job to Postgres (status=QUEUED)</li>
+                    <li>Worker pool (SELECT FOR UPDATE SKIP LOCKED)</li>
+                    <li>Job handler registry (pluggable handlers)</li>
+                    <li>Retry with exponential backoff + jitter</li>
+                    <li>Visibility timeout + watchdog recovery</li>
+                    <li>Priority-weighted scheduling with aging</li>
+                    <li>Worker heartbeat (extends lock on long jobs)</li>
+                    <li>Dead-letter queue (after max retries)</li>
+                    <li>Job event audit trail</li>
+                </ul>
+                <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--rule2);">
+                    <div style="font-family:'Fira Code',monospace;font-size:9px;letter-spacing:.12em;color:var(--dim);text-transform:uppercase;margin-bottom:6px;">
+                        Why separate deployment is valuable
+                    </div>
+                    <ul class="bnd-list">
+                        <li>Gateway and Processor scale independently</li>
+                        <li>Gateway can be deployed to multiple AZs</li>
+                        <li>Processor outage doesn't affect job acceptance</li>
+                        <li>Different resource profiles: Gateway=CPU, Processor=I/O</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="callout info">
+            <strong>One repo, two deployable JARs.</strong> The monorepo has a Gradle multi-project build: <code>flowshield-gateway</code>
+            and <code>flowshield-processor</code> each produce independent Spring Boot fat JARs. They share <code>flowshield-common</code>
+            (domain models, DTOs, constants). Each deploys to its own EC2 instance. This is the cleanest architecture
+            for a portfolio project — clean enough to be impressive, simple enough to actually build.
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════
+         S2 — HLD DIAGRAM
+    ═══════════════════════════════════════════════════ -->
+    <section class="sec" id="s2">
+        <div class="sec-eye">Section 02</div>
+        <div class="sec-title">High-Level Design — Full System Architecture</div>
+        <div class="sec-sub">Every component, every connection, every data store. Read left to right: client → gateway →
+            queue → processor → storage.
+        </div>
+
+        <div class="diagram">
+            <div class="d-title">// FLOWSHIELD v2.0 — HIGH-LEVEL ARCHITECTURE</div>
+            <pre>
+<span class="d-c">// ── CLIENTS ──────────────────────────────────────────────────────────────────── //</span>
+
+  <span class="d-g">[ Merchant API Client ]</span>     <span class="d-g">[ Internal Service ]</span>     <span
+                    class="d-g">[ React Dashboard ]</span>
+  POST /api/v1/jobs              POST /api/v1/jobs         GET /api/v1/admin/*
+  X-API-Key: mk_live_...         X-API-Key: svc_...        (Admin UI)
+  X-Idempotency-Key: ...         X-Forwarded-For: IP
+         │                              │                         │
+         └──────────────────────────────┼─────────────────────────┘
+                                        │ HTTPS
+                                        ▼
+<span class="d-c">// ── FLOWSHIELD GATEWAY MODULE ────────────────────────────────────────────────── //</span>
+
+<span class="d-n">  ┌───────────────────────────────────────────────────────────────────────────┐</span>
+<span class="d-n">  │                    FLOWSHIELD GATEWAY (EC2 t2.micro)                      │</span>
+<span class="d-n">  │                    Spring Boot 3 · Port 8080                              │</span>
+<span class="d-n">  │                                                                           │</span>
+<span class="d-n">  │  Request Filter Chain (executes in order, fail-fast):                    │</span>
+<span class="d-n">  │                                                                           │</span>
+<span class="d-n">  │  ① IpThrottleFilter ────────────────────────────────────────────────►   │</span>  <span
+                    class="d-c">← Redis: ip:throttle:{ip} INCR+TTL</span>
+<span class="d-n">  │     Block: >200 req/min/IP → 429. Flag: >500 req/min → abuse score +10   │</span>
+<span class="d-n">  │                                                                           │</span>
+<span class="d-n">  │  ② TenantAuthFilter ───────────────────────────────────────────────────► │</span>  <span
+                    class="d-c">← Redis cache: tenant:{hash} (5min TTL)</span>
+<span class="d-n">  │     SHA-256(api_key) → lookup tenant + plan. 401 if not found.           │</span>  <span
+                    class="d-c">  DB fallback on cache miss</span>
+<span class="d-n">  │                                                                           │</span>
+<span class="d-n">  │  ③ AbuseDetectionFilter ──────────────────────────────────────────────►  │</span>  <span
+                    class="d-c">← Redis: abuse:score:{tenantId}</span>
+<span class="d-n">  │     Score >80 → 403 FORBIDDEN. Score 50-80 → rate limit to FREE tier.   │</span>
+<span class="d-n">  │                                                                           │</span>
+<span class="d-n">  │  ④ RateLimitFilter ────────────────────────────────────────────────────►  │</span>  <span
+                    class="d-c">← Redis Lua: rl:bucket:{tenantId}</span>
+<span class="d-n">  │     Token bucket per tenant. 429 + Retry-After on exceed.                │</span>  <span
+                    class="d-c">  Atomic check-decrement-return</span>
+<span class="d-n">  │                                                                           │</span>
+<span class="d-n">  │  ⑤ IdempotencyFilter ──────────────────────────────────────────────────►  │</span>  <span
+                    class="d-c">← Redis SETNX: idem:{tenantId}:{key}</span>
+<span class="d-n">  │     Cache hit → return 200 immediately. Miss → continue.                 │</span>  <span
+                    class="d-c">  DB UNIQUE constraint as fallback</span>
+<span class="d-n">  │                                                                           │</span>
+<span class="d-n">  │  ⑥ JobController ──────────────────────────────────────────────────────►  │</span>
+<span class="d-n">  │     Validate payload → INSERT jobs (QUEUED) → Publish to SQS → 202      │</span>
+<span class="d-n">  └───────────────────────────────────────────────────────────────────────────┘</span>
+           │                              │                        │
+     <span class="d-b">[Redis 7]</span>                     <span class="d-y">[PostgreSQL 16]</span>          <span
+                    class="d-p">[AWS SQS]</span>
+     Rate limit buckets            jobs table (write)        jobs.submitted
+     Idempotency keys              tenants table             topic
+     Abuse scores                  tenant_plans              (FIFO queue)
+     Tenant cache                                                 │
+                                                                  │ consume
+                                                                  ▼
+<span class="d-c">// ── FLOWSHIELD PROCESSOR MODULE ─────────────────────────────────────────────── //</span>
+
+<span class="d-n">  ┌───────────────────────────────────────────────────────────────────────────┐</span>
+<span class="d-n">  │                 FLOWSHIELD PROCESSOR (EC2 t2.micro)                       │</span>
+<span class="d-n">  │                 Spring Boot 3 · Background service                        │</span>
+<span class="d-n">  │                                                                           │</span>
+<span class="d-n">  │  SqsConsumer ──► Persist job to Postgres (status=QUEUED)                 │</span>
+<span class="d-n">  │                                                                           │</span>
+<span class="d-n">  │  ThreadPoolExecutor [N workers] ──► SELECT FOR UPDATE SKIP LOCKED        │</span>  <span
+                    class="d-c">← ORDER BY priority ASC, visible_after</span>
+<span class="d-n">  │     ├── Execute handler (SendEmailHandler, ProcessPaymentHandler, etc.)   │</span>
+<span class="d-n">  │     ├── Heartbeat thread: extend locked_until every 20s                  │</span>
+<span class="d-n">  │     ├── On success: status=DONE, write COMPLETED event                   │</span>
+<span class="d-n">  │     └── On failure: backoff(2^n × 1s + jitter) → re-queue / DEAD        │</span>
+<span class="d-n">  │                                                                           │</span>
+<span class="d-n">  │  WatchdogScheduler [@Scheduled 10s] ──►                                  │</span>
+<span class="d-n">  │     Recover stale locks (CAS pattern)                                    │</span>
+<span class="d-n">  │     Priority aging (jobs waiting > SLA threshold)                        │</span>
+<span class="d-n">  └───────────────────────────────────────────────────────────────────────────┘</span>
+           │                                          │
+     <span class="d-y">[PostgreSQL 16]</span>                          <span class="d-b">[Redis 7]</span>
+     jobs (read + write)                      Metrics cache
+     job_events (audit trail)                 Queue depth gauges
+     tenant_plans
+     tenants
+
+<span class="d-c">// ── REACT DASHBOARD ──────────────────────────────────────────────────────────── //</span>
+
+  <span class="d-g">[ React Dashboard ]</span>  ──► <span class="d-n">Gateway Admin API (/api/v1/admin/*)</span>
+  S3 + CloudFront CDN         Tenant CRUD · Quota management
+  (Static hosting)            Security events · Traffic metrics
+                              WebSocket: live RPS charts + abuse feed
+</pre>
+        </div>
+
+        <div class="callout good">
+            <strong>The boundary is SQS.</strong> The Gateway writes to Postgres (job record) and publishes to SQS
+            (trigger). The Processor consumes from SQS and takes ownership. This means: Gateway going down doesn't lose
+            jobs that were already queued. Processor going down doesn't affect new job acceptance (SQS buffers). These
+            are independent failure domains.
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════
+         S3 — LLD DIAGRAM
+    ═══════════════════════════════════════════════════ -->
+    <section class="sec" id="s3">
+        <div class="sec-eye">Section 03</div>
+        <div class="sec-title">Low-Level Design — Component Detail</div>
+        <div class="sec-sub">Every class, every interface, every interaction that matters. This is what you'll be asked
+            about in interviews.
+        </div>
+
+        <p><strong>Gateway Module — Component Breakdown</strong></p>
+        <div class="lld-grid">
+            <div class="lld-card">
+                <div class="lld-module">filter</div>
+                <div class="lld-name"><code>IpThrottleFilter</code></div>
+                <div class="lld-items">
+                    <div class="lld-item">Extracts IP from <code>X-Forwarded-For</code> header (handles proxies)</div>
+                    <div class="lld-item">Redis: <code>INCR ip:throttle:{ip}</code> + <code>EXPIRE 60</code> (fixed
+                        window/min)
+                    </div>
+                    <div class="lld-item">Threshold 1: >200/min → 429 immediately</div>
+                    <div class="lld-item">Threshold 2: >500/min → publish to <code>abuse:events</code> Redis stream
+                    </div>
+                    <div class="lld-item">FAIL_OPEN: if Redis unavailable, log and pass through</div>
+                </div>
+                <div class="lld-dep">Depends: RedisTemplate · AbuseEventPublisher</div>
+            </div>
+            <div class="lld-card">
+                <div class="lld-module">filter</div>
+                <div class="lld-name"><code>TenantAuthFilter</code></div>
+                <div class="lld-items">
+                    <div class="lld-item">Reads <code>X-API-Key</code> header → SHA-256 hash</div>
+                    <div class="lld-item">L1: Redis GET <code>tenant:{keyHash}</code> (5min TTL, stores TenantContext
+                        JSON)
+                    </div>
+                    <div class="lld-item">L2: DB query on cache miss → populate cache</div>
+                    <div class="lld-item">Sets <code>TenantContext</code> in request attribute for downstream filters
+                    </div>
+                    <div class="lld-item">401 on missing key. 403 on inactive tenant.</div>
+                </div>
+                <div class="lld-dep">Depends: RedisTemplate · TenantRepository</div>
+            </div>
+            <div class="lld-card">
+                <div class="lld-module">filter</div>
+                <div class="lld-name"><code>AbuseDetectionFilter</code></div>
+                <div class="lld-items">
+                    <div class="lld-item">Reads <code>abuse:score:{tenantId}</code> from Redis (0-100)</div>
+                    <div class="lld-item">Score >80: block with 403 "Tenant suspended for abuse"</div>
+                    <div class="lld-item">Score 50-80: override plan → FREE tier limits temporarily</div>
+                    <div class="lld-item">Score decays 5 pts/hour (implemented via TTL + initial value)</div>
+                    <div class="lld-item">Listens to <code>abuse:events</code> stream to increment scores async</div>
+                </div>
+                <div class="lld-dep">Depends: RedisTemplate · AbuseScoreService</div>
+            </div>
+            <div class="lld-card">
+                <div class="lld-module">filter</div>
+                <div class="lld-name"><code>RateLimitFilter</code></div>
+                <div class="lld-items">
+                    <div class="lld-item">Loads plan limits from TenantContext (set by AuthFilter)</div>
+                    <div class="lld-item">Executes <code>token_bucket.lua</code> via EVALSHA (cached SHA on startup)
+                    </div>
+                    <div class="lld-item">ALLOW: sets <code>X-RateLimit-Remaining</code> header, continues</div>
+                    <div class="lld-item">DENY: 429 + <code>Retry-After</code> + <code>X-RateLimit-Reset</code> headers
+                    </div>
+                    <div class="lld-item">Micrometer timer: measures Lua round-trip latency per call</div>
+                    <div class="lld-item">Circuit breaker: FAIL_OPEN for bulk jobs, FAIL_CLOSED for payments</div>
+                </div>
+                <div class="lld-dep">Depends: LettuceConnectionFactory · MeterRegistry</div>
+            </div>
+            <div class="lld-card">
+                <div class="lld-module">filter</div>
+                <div class="lld-name"><code>IdempotencyFilter</code></div>
+                <div class="lld-items">
+                    <div class="lld-item">Requires <code>X-Idempotency-Key</code> header (400 if missing on POST)</div>
+                    <div class="lld-item">Redis SETNX <code>idem:{tenantId}:{key}</code> EX 86400 → stores job_id</div>
+                    <div class="lld-item">Cache hit: fetch existing job from DB, return 200 immediately</div>
+                    <div class="lld-item">DB UNIQUE constraint on <code>(tenant_id, idempotency_key)</code> as backstop
+                    </div>
+                    <div class="lld-item">On constraint violation: convert to 200 with existing job (no 409)</div>
+                </div>
+                <div class="lld-dep">Depends: RedisTemplate · JobRepository</div>
+            </div>
+            <div class="lld-card">
+                <div class="lld-module">controller</div>
+                <div class="lld-name"><code>JobController</code></div>
+                <div class="lld-items">
+                    <div class="lld-item">POST /api/v1/jobs → validates payload via Bean Validation</div>
+                    <div class="lld-item">Inherits tenant from TenantContext (set by AuthFilter)</div>
+                    <div class="lld-item">Inserts job to Postgres → publishes to SQS → returns 202 Accepted</div>
+                    <div class="lld-item">GET /api/v1/jobs/{id} → tenant-scoped status query (can't see other tenants'
+                        jobs)
+                    </div>
+                    <div class="lld-item">POST /api/v1/jobs/{id}/cancel → sets status=CANCELLED if QUEUED</div>
+                </div>
+                <div class="lld-dep">Depends: JobRepository · SqsPublisher · TenantContext</div>
+            </div>
+        </div>
+
+        <p style="margin-top:28px;"><strong>Processor Module — Component Breakdown</strong></p>
+        <div class="lld-grid">
+            <div class="lld-card">
+                <div class="lld-module">consumer</div>
+                <div class="lld-name"><code>SqsJobConsumer</code></div>
+                <div class="lld-items">
+                    <div class="lld-item"><code>@SqsListener("flowshield-jobs")</code> — Spring Cloud AWS</div>
+                    <div class="lld-item">Receives job_id from SQS message body (not full payload)</div>
+                    <div class="lld-item">Fetches full job from Postgres (SQS = trigger, DB = source of truth)</div>
+                    <div class="lld-item">Idempotent: if job already PROCESSING/DONE, ACK and skip</div>
+                    <div class="lld-item">On DB error: don't ACK → SQS redelivers after visibility timeout</div>
+                </div>
+                <div class="lld-dep">Depends: JobRepository · WorkerOrchestrator</div>
+            </div>
+            <div class="lld-card">
+                <div class="lld-module">worker</div>
+                <div class="lld-name"><code>WorkerOrchestrator</code></div>
+                <div class="lld-items">
+                    <div class="lld-item"><code>ThreadPoolExecutor</code> — size from
+                        <code>flowshield.workers.count</code> (default 5)
+                    </div>
+                    <div class="lld-item">Worker poll loop: JPQL with <code>FOR UPDATE SKIP LOCKED</code></div>
+                    <div class="lld-item">Claims job: sets <code>locked_by</code>, <code>locked_until = now()+30s</code>
+                    </div>
+                    <div class="lld-item">Resolves handler via <code>JobHandlerRegistry.getHandler(job.type)</code>
+                    </div>
+                    <div class="lld-item">On graceful shutdown: <code>shuttingDown=true</code>, drain current jobs, max
+                        60s wait
+                    </div>
+                </div>
+                <div class="lld-dep">Depends: JobRepository · JobHandlerRegistry · HeartbeatService</div>
+            </div>
+            <div class="lld-card">
+                <div class="lld-module">interface</div>
+                <div class="lld-name"><code>JobHandler</code></div>
+                <div class="lld-items">
+                    <div class="lld-item"><code>void execute(Job job) throws JobExecutionException</code></div>
+                    <div class="lld-item">Implementations: SendEmailHandler, ProcessPaymentHandler,
+                        GenerateReportHandler
+                    </div>
+                    <div class="lld-item">Contract: handlers MUST be idempotent (at-least-once delivery)</div>
+                    <div class="lld-item"><code>@Component + @JobType("SEND_EMAIL")</code> annotation for
+                        auto-registration
+                    </div>
+                    <div class="lld-item">Checked exceptions: <code>RetryableException</code> vs
+                        <code>FatalException</code> (skip retry)
+                    </div>
+                </div>
+                <div class="lld-dep">Implementations are in consumer bounded context</div>
+            </div>
+            <div class="lld-card">
+                <div class="lld-module">scheduler</div>
+                <div class="lld-name"><code>WatchdogScheduler</code></div>
+                <div class="lld-items">
+                    <div class="lld-item"><code>@Scheduled(fixedDelay=10000)</code> — runs every 10 seconds</div>
+                    <div class="lld-item">Recovery: UPDATE jobs WHERE <code>locked_until &lt; now() AND locked_by IS NOT
+                        NULL</code></div>
+                    <div class="lld-item">CAS pattern: only updates if both conditions still true (race-safe)</div>
+                    <div class="lld-item">Priority aging: decrement priority every 60s for long-waiting jobs (floor=1)
+                    </div>
+                    <div class="lld-item">Alerts Micrometer counter on each recovery (paging signal)</div>
+                </div>
+                <div class="lld-dep">Depends: JobRepository · MeterRegistry</div>
+            </div>
+            <div class="lld-card">
+                <div class="lld-module">service</div>
+                <div class="lld-name"><code>HeartbeatService</code></div>
+                <div class="lld-items">
+                    <div class="lld-item">Runs in separate thread per active worker</div>
+                    <div class="lld-item">Every 20s: <code>UPDATE jobs SET locked_until=now()+30s WHERE id=? AND
+                        locked_by=?</code></div>
+                    <div class="lld-item">CAS: checks <code>locked_by</code> — prevents race with watchdog during slow
+                        jobs
+                    </div>
+                    <div class="lld-item">Stops automatically when worker marks job DONE/FAILED</div>
+                    <div class="lld-item">Solves: report jobs running 2-4 min without getting re-queued</div>
+                </div>
+                <div class="lld-dep">Depends: JobRepository · ScheduledExecutorService</div>
+            </div>
+            <div class="lld-card">
+                <div class="lld-module">service</div>
+                <div class="lld-name"><code>RetryDecisionService</code></div>
+                <div class="lld-items">
+                    <div class="lld-item">On failure: determines if exception is <code>RetryableException</code></div>
+                    <div class="lld-item">Calculates: <code>visible_after = now() + clamp(2^n × 1000, 1000, 30000) +
+                        rand(0,1000)</code> ms
+                    </div>
+                    <div class="lld-item">After max_attempts: marks DEAD, writes DEAD event, never retries</div>
+                    <div class="lld-item">FatalException (e.g., invalid payload): skip to DEAD immediately</div>
+                    <div class="lld-item">Logs structured error with all context for post-mortem</div>
+                </div>
+                <div class="lld-dep">Depends: JobRepository · JobEventRepository</div>
+            </div>
+        </div>
+
+        <p style="margin-top:28px;"><strong>Shared — Filter Chain Execution Flow with Timing</strong></p>
+        <div class="diagram">
+<pre>
+<span class="d-c">// ── GATEWAY REQUEST LIFECYCLE (single POST /api/v1/jobs) ─────────────────── //</span>
+
+  Client Request → Spring Filter Chain
+                                                              <span class="d-c">Typical latency</span>
+  ① IpThrottleFilter
+     └─► Redis INCR + EXPIRE                                  <span class="d-y">~0.3ms</span>
+     └─► If &gt;200/min → 429 (stop here)
+
+  ② TenantAuthFilter
+     └─► Redis GET tenant:{hash}  (cache hit ~95%)            <span class="d-y">~0.3ms</span>
+     └─► Postgres SELECT  (cache miss ~5%)                    <span class="d-y">~3–5ms</span>
+     └─► If not found → 401 (stop here)
+
+  ③ AbuseDetectionFilter
+     └─► Redis GET abuse:score:{tenantId}                     <span class="d-y">~0.2ms</span>
+     └─► If score &gt;80 → 403 (stop here)
+
+  ④ RateLimitFilter
+     └─► Redis EVALSHA token_bucket.lua                       <span class="d-y">~0.4ms</span>
+     └─► If deny → 429 + Retry-After (stop here)
+
+  ⑤ IdempotencyFilter
+     └─► Redis SETNX idem:{tenantId}:{key}                    <span class="d-y">~0.3ms</span>
+     └─► If key existed → 200 (stop here, no DB hit)
+
+  ⑥ JobController
+     └─► Validate payload (Bean Validation, in-memory)        <span class="d-y">~0.1ms</span>
+     └─► Postgres INSERT jobs                                  <span class="d-y">~3–5ms</span>
+     └─► SQS SendMessage                                      <span class="d-y">~15ms</span>  <span class="d-r">← this is the only "slow" step</span>
+     └─► Return 202 Accepted
+
+  <span class="d-c">Total P99 (happy path, cache hot): ~20ms</span>
+  <span class="d-c">Total P99 (cache miss): ~25ms</span>
+  <span class="d-c">SQS async option: fire-and-forget → reduces to ~5ms but loses delivery guarantee</span>
+</pre>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════
+         S4 — TECH STACK
+    ═══════════════════════════════════════════════════ -->
+    <section class="sec" id="s4">
+        <div class="sec-eye">Section 04</div>
+        <div class="sec-title">Tech Stack — Every Choice Justified</div>
+        <div class="sec-sub">Not "I used X because it's popular." <strong>Every choice has a tradeoff rationale you can
+            defend in an interview.</strong></div>
+
+        <table class="tt">
+            <thead>
+            <tr>
+                <th>Component</th>
+                <th>Choice</th>
+                <th>Why This</th>
+                <th>What I Rejected</th>
+                <th>Trade-off I Accepted</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Gateway Language</td>
+                <td>
+                    <div class="tt-tag p">Java 17</div>
+                    <div class="tt-tag p">Spring Boot 3.2</div>
+                </td>
+                <td>Your strongest language. Virtual Threads (Project Loom) in Spring Boot 3.2 give near-reactive
+                    throughput with blocking code. Spring's filter chain is the right abstraction for multi-step request
+                    processing.
+                </td>
+                <td>Go (faster cold start, but you'd be learning language + architecture simultaneously), Node.js
+                    (single-threaded, rate limiting at high concurrency is harder)
+                </td>
+                <td>JVM startup time (~3s vs Go's ~100ms). Mitigated by keeping instances always warm on EC2.</td>
+            </tr>
+            <tr>
+                <td>Rate Limit Store</td>
+                <td>
+                    <div class="tt-tag p">Redis 7</div>
+                    <div class="tt-tag p">Lua Scripts</div>
+                    <div class="tt-tag">Lettuce</div>
+                </td>
+                <td>Sub-millisecond latency for the hot path. Lua scripts execute atomically on Redis server — no TOCTOU
+                    race. Lettuce is non-blocking (important for filter chain throughput). Redis TIME in Lua eliminates
+                    clock drift.
+                </td>
+                <td>In-memory (fails with multiple instances), Postgres (5–10ms per check, adds latency), Hazelcast
+                    (operational overhead)
+                </td>
+                <td>Redis is an additional infrastructure component. Mitigated by FAIL_OPEN on Redis outage for
+                    non-critical paths.
+                </td>
+            </tr>
+            <tr>
+                <td>Primary Database</td>
+                <td>
+                    <div class="tt-tag p">PostgreSQL 16</div>
+                    <div class="tt-tag p">FOR UPDATE SKIP LOCKED</div>
+                    <div class="tt-tag">Flyway</div>
+                </td>
+                <td>FOR UPDATE SKIP LOCKED is native Postgres — no external queue broker needed. JSONB for flexible job
+                    payloads. UNIQUE constraint for idempotency. Partial index on QUEUED rows keeps worker pickup fast
+                    as table grows.
+                </td>
+                <td>MySQL (SKIP LOCKED available but Postgres JSONB is superior), MongoDB (no SKIP LOCKED equivalent,
+                    harder to enforce consistency)
+                </td>
+                <td>Postgres at very high write load (~5K inserts/sec) needs connection pooling (PgBouncer) + read
+                    replicas. Acceptable for current scale.
+                </td>
+            </tr>
+            <tr>
+                <td>Message Queue</td>
+                <td>
+                    <div class="tt-tag p">AWS SQS (FIFO)</div>
+                </td>
+                <td>Free tier: 1M requests/month. Zero operational overhead (fully managed). Spring Cloud AWS
+                    integration is 20 lines of config. Exactly-once processing on FIFO queues with message deduplication
+                    IDs. Survives Gateway restart with no message loss.
+                </td>
+                <td>Kafka (operational overhead not justified at this scale — Kafka shines at >100K msgs/sec or when
+                    replay is needed), RabbitMQ (adds another managed service), Redis LPUSH/BRPOP (loses durability on
+                    Redis restart)
+                </td>
+                <td>SQS has ~15ms publish latency vs Kafka's ~5ms. Acceptable. SQS max message size: 256KB — job
+                    payloads must stay under this (enforced by validation).
+                </td>
+            </tr>
+            <tr>
+                <td>Frontend</td>
+                <td>
+                    <div class="tt-tag p">React 18</div>
+                    <div class="tt-tag">Vite</div>
+                    <div class="tt-tag">TailwindCSS</div>
+                    <div class="tt-tag">Recharts</div>
+                    <div class="tt-tag">TanStack Query</div>
+                </td>
+                <td>React you specified. Vite for fast builds (10× faster than CRA). TanStack Query for server-state
+                    management (auto-refetch for live metrics). Recharts for time-series traffic charts. WebSocket via
+                    SockJS+STOMP for real-time security events.
+                </td>
+                <td>Next.js (SSR not needed for an admin dashboard), Vue (preference decision), Angular (too heavy for a
+                    portfolio dashboard)
+                </td>
+                <td>Client-side only routing (no SSR) means no SEO. Irrelevant for an admin tool.</td>
+            </tr>
+            <tr>
+                <td>Frontend Hosting</td>
+                <td>
+                    <div class="tt-tag p">S3 + CloudFront</div>
+                </td>
+                <td>S3 static hosting: $0.023/GB/month. CloudFront CDN: free tier 1TB/month data transfer. Custom domain
+                    via Route 53. HTTPS via ACM (free). This is how real companies host SPAs. "Deployed to S3 +
+                    CloudFront" is a stronger resume signal than Vercel/Netlify.
+                </td>
+                <td>Vercel/Netlify (easier but doesn't add AWS signal), Nginx on EC2 (unnecessary complexity for static
+                    files)
+                </td>
+                <td>CloudFront cache invalidation needed on each deploy ($0.005/1000 paths — negligible).</td>
+            </tr>
+            <tr>
+                <td>Testing</td>
+                <td>
+                    <div class="tt-tag p">Testcontainers</div>
+                    <div class="tt-tag">JUnit 5</div>
+                    <div class="tt-tag">RestAssured</div>
+                    <div class="tt-tag">k6</div>
+                </td>
+                <td>Testcontainers: real Postgres + Redis + LocalStack (SQS) in Docker. No mocking infrastructure.
+                    RestAssured for readable integration tests. k6 for load testing with real throughput numbers.
+                </td>
+                <td>H2 in-memory (doesn't test SKIP LOCKED, JSONB, partial indexes), Mockito-only (misses integration
+                    bugs)
+                </td>
+                <td>Testcontainers tests are slower (~15s startup). Run in a separate CI stage from unit tests.</td>
+            </tr>
+            <tr>
+                <td>CI/CD</td>
+                <td>
+                    <div class="tt-tag p">GitHub Actions</div>
+                    <div class="tt-tag">AWS CodeDeploy</div>
+                </td>
+                <td>GitHub Actions: free for public repos. CodeDeploy: free, integrates natively with EC2. Pipeline:
+                    push → test → build JAR → push to S3 → CodeDeploy agent pulls and restarts. Zero-downtime via
+                    rolling deploy.
+                </td>
+                <td>Jenkins (self-hosted overhead), CircleCI (costs money), AWS CodePipeline (more complex setup for
+                    same result)
+                </td>
+                <td>CodeDeploy requires CodeDeploy agent on EC2 instances (one-time 10min setup).</td>
+            </tr>
+            <tr>
+                <td>Observability</td>
+                <td>
+                    <div class="tt-tag p">Micrometer</div>
+                    <div class="tt-tag">CloudWatch</div>
+                    <div class="tt-tag">Spring Actuator</div>
+                </td>
+                <td>Micrometer: Spring's native metrics abstraction. CloudWatch: free tier 10 custom metrics. Spring
+                    Actuator for health checks (used by ALB health checks). No Grafana/Prometheus infrastructure needed
+                    — CloudWatch handles everything on AWS free tier.
+                </td>
+                <td>Prometheus + Grafana (beautiful but adds 2 more services to manage on EC2), Datadog (costs money)
+                </td>
+                <td>CloudWatch dashboards are less beautiful than Grafana. Acceptable for a portfolio project.</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════
+         S5 — DATA MODEL
+    ═══════════════════════════════════════════════════ -->
+    <section class="sec" id="s5">
+        <div class="sec-eye">Section 05</div>
+        <div class="sec-title">Data Model — Final Schema</div>
+        <div class="sec-sub">The schema encodes business rules. Every design decision in the schema has a reason.</div>
+
+        <div class="code">
+            <div class="code-title"><span>PostgreSQL 16 — Complete Schema</span><span class="code-file">V1__flowshield_schema.sql</span>
+            </div>
+            <pre>
+<span class="c-cm">-- ── TENANT PLANS: business rules encoded as data ─────────────────────────── --</span>
+<span class="c-kw">CREATE TABLE</span> <span class="c-cls">tenant_plans</span> (
+  <span class="c-fn">plan</span>                    <span class="c-ty">VARCHAR(20)  PRIMARY KEY</span>,           <span
+                    class="c-cm">-- FREE | PRO | ENTERPRISE</span>
+  <span class="c-fn">max_jobs_per_minute</span>     <span class="c-ty">INT          NOT NULL</span>,             <span
+                    class="c-cm">-- token bucket capacity + rate</span>
+  <span class="c-fn">max_concurrent_jobs</span>     <span class="c-ty">INT          NOT NULL</span>,             <span
+                    class="c-cm">-- max PROCESSING state</span>
+  <span class="c-fn">max_queue_depth</span>         <span class="c-ty">INT          NOT NULL</span>,             <span
+                    class="c-cm">-- max QUEUED state</span>
+  <span class="c-fn">max_retries</span>             <span class="c-ty">INT          NOT NULL DEFAULT 3</span>,
+  <span class="c-fn">base_priority</span>           <span class="c-ty">INT          NOT NULL DEFAULT 5</span>,    <span
+                    class="c-cm">-- 1=highest: ENT=1, PRO=5, FREE=10</span>
+  <span class="c-fn">sla_critical_seconds</span>    <span class="c-ty">INT          NOT NULL DEFAULT 30</span>,   <span
+                    class="c-cm">-- P99 target for CRITICAL jobs</span>
+  <span class="c-fn">fail_open_on_rate_limit</span> <span class="c-ty">BOOLEAN      NOT NULL DEFAULT false</span>  <span
+                    class="c-cm">-- allow through if Redis down?</span>
+);
+<span class="c-kw">INSERT INTO</span> <span class="c-cls">tenant_plans</span> <span class="c-kw">VALUES</span>
+  (<span class="c-str">'FREE'</span>,       10,   2,   100,  3, 10, 300, <span class="c-kw">true</span>),
+  (<span class="c-str">'PRO'</span>,       100,  20,  1000, 5,  5, 60,  <span class="c-kw">false</span>),
+  (<span class="c-str">'ENTERPRISE'</span>,1000, 200, 10000,10, 1, 30,  <span class="c-kw">false</span>);
+
+<span class="c-cm">-- ── TENANTS ───────────────────────────────────────────────────────────────── --</span>
+<span class="c-kw">CREATE TABLE</span> <span class="c-cls">tenants</span> (
+  <span class="c-fn">id</span>              <span class="c-ty">UUID         PRIMARY KEY DEFAULT gen_random_uuid()</span>,
+  <span class="c-fn">name</span>            <span class="c-ty">VARCHAR(255) NOT NULL</span>,
+  <span class="c-fn">api_key_hash</span>    <span class="c-ty">CHAR(64)     UNIQUE NOT NULL</span>,      <span
+                    class="c-cm">-- SHA-256 hex. NEVER store raw key.</span>
+  <span class="c-fn">plan</span>            <span
+                    class="c-ty">VARCHAR(20)  NOT NULL REFERENCES tenant_plans(plan)</span>,
+  <span class="c-fn">is_active</span>       <span class="c-ty">BOOLEAN      NOT NULL DEFAULT true</span>,
+  <span class="c-fn">abuse_score</span>     <span class="c-ty">INT          NOT NULL DEFAULT 0 CHECK (abuse_score BETWEEN 0 AND 100)</span>,
+  <span class="c-fn">created_at</span>      <span class="c-ty">TIMESTAMPTZ  NOT NULL DEFAULT now()</span>,
+  <span class="c-fn">last_active_at</span>  <span class="c-ty">TIMESTAMPTZ</span>
+);
+
+<span class="c-cm">-- ── JOBS: the core entity ─────────────────────────────────────────────────── --</span>
+<span class="c-kw">CREATE TABLE</span> <span class="c-cls">jobs</span> (
+  <span class="c-fn">id</span>               <span
+                    class="c-ty">UUID         PRIMARY KEY DEFAULT gen_random_uuid()</span>,
+  <span class="c-fn">tenant_id</span>        <span class="c-ty">UUID         NOT NULL REFERENCES tenants(id)</span>,
+  <span class="c-fn">idempotency_key</span>  <span class="c-ty">VARCHAR(255) NOT NULL</span>,
+  <span class="c-fn">type</span>             <span class="c-ty">VARCHAR(100) NOT NULL</span>,
+  <span class="c-fn">priority</span>         <span class="c-ty">INT          NOT NULL DEFAULT 5</span>,         <span
+                    class="c-cm">-- 1=highest; from plan at submission</span>
+  <span class="c-fn">job_priority_class</span> <span class="c-ty">VARCHAR(10) NOT NULL DEFAULT 'NORMAL'</span>,  <span
+                    class="c-cm">-- CRITICAL|NORMAL|BULK</span>
+  <span class="c-fn">payload</span>          <span class="c-ty">JSONB        NOT NULL</span>,
+  <span class="c-fn">status</span>           <span class="c-ty">VARCHAR(20)  NOT NULL DEFAULT 'QUEUED'</span>,  <span
+                    class="c-cm">-- QUEUED|PROCESSING|DONE|FAILED|DEAD|CANCELLED</span>
+  <span class="c-fn">attempt_count</span>    <span class="c-ty">INT          NOT NULL DEFAULT 0</span>,
+  <span class="c-fn">max_attempts</span>     <span class="c-ty">INT          NOT NULL DEFAULT 3</span>,
+  <span class="c-fn">visible_after</span>    <span class="c-ty">TIMESTAMPTZ  NOT NULL DEFAULT now()</span>,     <span
+                    class="c-cm">-- don't pick up before this (backoff)</span>
+  <span class="c-fn">locked_by</span>        <span class="c-ty">VARCHAR(100)</span>,                             <span
+                    class="c-cm">-- worker_id (UUID per instance)</span>
+  <span class="c-fn">locked_until</span>     <span class="c-ty">TIMESTAMPTZ</span>,                              <span
+                    class="c-cm">-- visibility timeout</span>
+  <span class="c-fn">last_error</span>       <span class="c-ty">TEXT</span>,
+  <span class="c-fn">created_at</span>       <span class="c-ty">TIMESTAMPTZ  NOT NULL DEFAULT now()</span>,
+  <span class="c-fn">completed_at</span>     <span class="c-ty">TIMESTAMPTZ</span>,
+  <span class="c-fn">source_ip</span>        <span class="c-ty">INET</span>,                                     <span
+                    class="c-cm">-- for abuse analysis</span>
+
+  <span class="c-kw">CONSTRAINT</span> uq_job_idempotency <span class="c-kw">UNIQUE</span> (<span
+                    class="c-fn">tenant_id</span>, <span class="c-fn">idempotency_key</span>)
+);
+
+<span class="c-cm">-- Worker pickup: the most critical query in the system</span>
+<span class="c-cm">-- Partial index: only QUEUED rows. Stays small as completed jobs grow.</span>
+<span class="c-kw">CREATE INDEX</span> idx_jobs_worker_pickup
+  <span class="c-kw">ON</span> <span class="c-cls">jobs</span> (<span class="c-fn">priority</span> <span class="c-kw">ASC</span>, <span
+                    class="c-fn">visible_after</span> <span class="c-kw">ASC</span>)
+  <span class="c-kw">WHERE</span> status = <span class="c-str">'QUEUED'</span>;
+
+<span class="c-cm">-- Watchdog recovery: finds stale locked jobs</span>
+<span class="c-kw">CREATE INDEX</span> idx_jobs_watchdog
+  <span class="c-kw">ON</span> <span class="c-cls">jobs</span> (<span class="c-fn">locked_until</span>)
+  <span class="c-kw">WHERE</span> status = <span class="c-str">'QUEUED'</span> <span
+                    class="c-kw">AND</span> locked_by <span class="c-kw">IS NOT NULL</span>;
+
+<span class="c-cm">-- Tenant status queries: GET /api/v1/jobs?status=QUEUED</span>
+<span class="c-kw">CREATE INDEX</span> idx_jobs_tenant_status <span class="c-kw">ON</span> <span
+                    class="c-cls">jobs</span> (<span class="c-fn">tenant_id</span>, <span
+                    class="c-fn">status</span>, <span class="c-fn">created_at</span> <span class="c-kw">DESC</span>);
+
+<span class="c-cm">-- ── JOB EVENTS: immutable audit trail ────────────────────────────────────── --</span>
+<span class="c-kw">CREATE TABLE</span> <span class="c-cls">job_events</span> (
+  <span class="c-fn">id</span>          <span class="c-ty">BIGSERIAL    PRIMARY KEY</span>,
+  <span class="c-fn">job_id</span>      <span class="c-ty">UUID         NOT NULL REFERENCES jobs(id)</span>,
+  <span class="c-fn">event_type</span>  <span class="c-ty">VARCHAR(30)  NOT NULL</span>,  <span class="c-cm">-- ENQUEUED|PICKED_UP|HEARTBEAT|RETRY|FAILED|COMPLETED|DEAD</span>
+  <span class="c-fn">worker_id</span>   <span class="c-ty">VARCHAR(100)</span>,
+  <span class="c-fn">attempt</span>     <span class="c-ty">INT</span>,
+  <span class="c-fn">message</span>     <span class="c-ty">TEXT</span>,
+  <span class="c-fn">created_at</span>  <span class="c-ty">TIMESTAMPTZ  NOT NULL DEFAULT now()</span>
+);
+<span class="c-kw">CREATE INDEX</span> idx_job_events_job_id <span class="c-kw">ON</span> <span
+                    class="c-cls">job_events</span> (<span class="c-fn">job_id</span>, <span
+                    class="c-fn">created_at</span>);
+
+<span class="c-cm">-- ── SECURITY EVENTS: abuse tracking ─────────────────────────────────────── --</span>
+<span class="c-kw">CREATE TABLE</span> <span class="c-cls">security_events</span> (
+  <span class="c-fn">id</span>          <span class="c-ty">BIGSERIAL    PRIMARY KEY</span>,
+  <span class="c-fn">tenant_id</span>   <span class="c-ty">UUID         REFERENCES tenants(id)</span>,  <span
+                    class="c-cm">-- nullable (unknown tenant on auth failure)</span>
+  <span class="c-fn">event_type</span>  <span class="c-ty">VARCHAR(50)  NOT NULL</span>,  <span class="c-cm">-- IP_THROTTLE|AUTH_FAILURE|RATE_LIMIT|ABUSE_BLOCK|IDEMPOTENCY_DUPLICATE</span>
+  <span class="c-fn">source_ip</span>   <span class="c-ty">INET</span>,
+  <span class="c-fn">details</span>     <span class="c-ty">JSONB</span>,
+  <span class="c-fn">created_at</span>  <span class="c-ty">TIMESTAMPTZ  NOT NULL DEFAULT now()</span>
+);
+<span class="c-kw">CREATE INDEX</span> idx_security_events_tenant <span class="c-kw">ON</span> <span class="c-cls">security_events</span> (<span
+                    class="c-fn">tenant_id</span>, <span class="c-fn">created_at</span> <span class="c-kw">DESC</span>);
+<span class="c-kw">CREATE INDEX</span> idx_security_events_ip <span class="c-kw">ON</span> <span class="c-cls">security_events</span> (<span
+                    class="c-fn">source_ip</span>, <span class="c-fn">created_at</span> <span class="c-kw">DESC</span>);
+</pre>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════
+         S6 — API DESIGN
+    ═══════════════════════════════════════════════════ -->
+    <section class="sec" id="s6">
+        <div class="sec-eye">Section 06</div>
+        <div class="sec-title">API Design — All Endpoints</div>
+        <div class="sec-sub">Tenant-facing + Admin APIs. Headers, status codes, error shapes — everything specified.
+        </div>
+
+        <div class="code">
+            <div class="code-title"><span>REST API — FlowShield Gateway v1</span></div>
+            <pre>
+<span class="c-cm">// ── AUTHENTICATION: all non-admin endpoints require X-API-Key header ──────── //</span>
+
+<span class="c-cm">// ─── JOB SUBMISSION ──────────────────────────────────────────────────────── //</span>
+
+<span class="c-cls">POST</span>   /api/v1/jobs
+  <span class="c-cm">Headers: X-API-Key (required), X-Idempotency-Key (required), X-Forwarded-For (set by proxy)</span>
+  <span class="c-cm">Body: { type: string, priority_class: "CRITICAL"|"NORMAL"|"BULK", payload: object }</span>
+  <span class="c-ty">202 Accepted:    { job_id, status: "QUEUED", created_at, retry_after: null }</span>
+  <span class="c-ty">200 OK:          { job_id, status: "...", created_at }  ← idempotency hit (existing job)</span>
+  <span class="c-str">400 Bad Request: { error: "VALIDATION_ERROR", fields: [{field, message}] }</span>
+  <span class="c-str">401 Unauthorized:{ error: "INVALID_API_KEY" }</span>
+  <span class="c-str">403 Forbidden:   { error: "TENANT_SUSPENDED", reason: "abuse_score_exceeded" }</span>
+  <span class="c-str">429 Too Many:    { error: "RATE_LIMITED", retry_after_seconds: 12 }</span>
+  <span class="c-cm">  Response headers on 202: X-RateLimit-Remaining, X-RateLimit-Reset</span>
+  <span class="c-cm">  Response headers on 429: Retry-After, X-RateLimit-Remaining: 0</span>
+
+<span class="c-cls">GET</span>    /api/v1/jobs/{id}
+  <span class="c-cm">Headers: X-API-Key (required) — tenant-scoped: can only see own jobs</span>
+  <span class="c-ty">200 OK:    { job_id, type, status, attempt_count, created_at, completed_at, last_error }</span>
+  <span class="c-str">403:       returned if job belongs to a different tenant (not 404 — prevents enumeration)</span>
+  <span class="c-str">404:       { error: "JOB_NOT_FOUND" }</span>
+
+<span class="c-cls">POST</span>   /api/v1/jobs/{id}/cancel
+  <span class="c-ty">200 OK:    { job_id, status: "CANCELLED" }  ← only if job is QUEUED</span>
+  <span class="c-str">409:       { error: "CANNOT_CANCEL", reason: "job_already_processing" }</span>
+
+<span class="c-cls">GET</span>    /api/v1/jobs
+  <span class="c-cm">Query: ?status=QUEUED|PROCESSING|DONE|FAILED|DEAD&type=SEND_EMAIL&page=0&size=20</span>
+  <span class="c-ty">200 OK:    { items: [Job], total: int, page: int, has_more: bool }</span>
+
+<span class="c-cm">// ─── QUOTA INFO ───────────────────────────────────────────────────────────── //</span>
+
+<span class="c-cls">GET</span>    /api/v1/quota
+  <span class="c-ty">200 OK: { plan: "PRO", limit: 100, used_last_minute: 23, remaining: 77,</span>
+  <span class="c-ty">          queue_depth: 12, max_queue_depth: 1000, reset_at: ISO8601 }</span>
+
+<span class="c-cm">// ─── ADMIN API (separate auth: X-Admin-Key header, not tenant API key) ────── //</span>
+
+<span class="c-cls">POST</span>   /api/v1/admin/tenants                <span class="c-cm">← Create new tenant, returns api_key (only time it's shown)</span>
+<span class="c-cls">GET</span>    /api/v1/admin/tenants                <span class="c-cm">← List all tenants with quota usage</span>
+<span class="c-cls">PATCH</span>  /api/v1/admin/tenants/{id}           <span class="c-cm">← Update plan, suspend/activate</span>
+<span class="c-cls">GET</span>    /api/v1/admin/tenants/{id}/metrics   <span class="c-cm">← Per-tenant traffic: RPS, allow/deny ratio</span>
+
+<span class="c-cls">GET</span>    /api/v1/admin/security/events        <span class="c-cm">← Recent abuse/throttle events (paginated)</span>
+<span class="c-cls">GET</span>    /api/v1/admin/security/ips           <span
+                    class="c-cm">← Top IPs by request volume</span>
+<span class="c-cls">POST</span>  /api/v1/admin/security/block-ip      <span class="c-cm">← Manually block an IP (Redis + DB record)</span>
+
+<span class="c-cls">GET</span>    /api/v1/admin/metrics/overview       <span class="c-cm">← Dashboard data: total RPS, top tenants, live allow/deny</span>
+<span class="c-cls">GET</span>    /api/v1/admin/metrics/stream         <span class="c-cm">← WebSocket endpoint for live charts (STOMP over SockJS)</span>
+
+<span class="c-cm">// ─── HEALTH + ACTUATOR ───────────────────────────────────────────────────── //</span>
+
+<span class="c-cls">GET</span>    /actuator/health                     <span class="c-cm">← Used by ALB health checks. Shows Redis + DB connectivity.</span>
+<span class="c-cls">GET</span>    /actuator/prometheus                 <span class="c-cm">← Scraped by CloudWatch agent for metrics</span>
+<span class="c-cls">GET</span>    /actuator/info                       <span class="c-cm">← Shows build version, git commit SHA</span>
+</pre>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════
+         S7 — SCALE ANALYSIS
+    ═══════════════════════════════════════════════════ -->
+    <section class="sec" id="s7">
+        <div class="sec-eye">Section 07 — Mentor Gap Addressed</div>
+        <div class="sec-title">Scale Analysis — What Breaks at 10K RPS and How to Fix It</div>
+        <div class="sec-sub"><strong>Missing from previous doc.</strong> This is what interviewers ask immediately after
+            you describe the design. Have these numbers ready.
+        </div>
+
+        <p>The current design targets <strong>current scale: ~100–500 RPS</strong>. This section models what happens at
+            10× (1K RPS) and 100× (10K RPS), identifies the bottleneck at each tier, and specifies the fix. This is how
+            a senior engineer thinks — not just "it works" but "here's where it breaks and what I'd do."</p>
+
+        <div class="scale-grid">
+            <div class="sc-card">
+                <div class="sc-comp">Redis — Rate Limiter</div>
+                <div class="sc-title">Token Bucket Throughput</div>
+                <div class="sc-math">
+                    <div class="eq">Redis ops capacity: ~100K ops/sec (single node)</div>
+                    <div class="ok">At 500 RPS: 500 Lua/s = 0.5% capacity ✓</div>
+                    <div class="ok">At 1K RPS: 1K Lua/s = 1% capacity ✓</div>
+                    <div class="ok">At 10K RPS: 10K Lua/s = 10% capacity ✓</div>
+                    <div class="warn">At 100K RPS: 100K Lua/s = 100% → bottleneck ⚠</div>
+                </div>
+                <div class="sc-note"><strong>Fix at 100K RPS:</strong> Redis Cluster with consistent hashing on
+                    tenant_id. Each shard handles ~33K ops/sec. Zero application code change — Lettuce Cluster handles
+                    routing transparently. Add this as a design note; don't build it now.
+                </div>
+            </div>
+            <div class="sc-card">
+                <div class="sc-comp">PostgreSQL — Job Writes</div>
+                <div class="sc-title">INSERT Throughput</div>
+                <div class="sc-math">
+                    <div class="eq">Postgres write capacity: ~3–5K INSERTs/sec (t3.medium RDS, SSD)</div>
+                    <div class="ok">At 500 RPS: 500 INSERTs/sec = 10–17% ✓</div>
+                    <div class="ok">At 1K RPS: 1K INSERTs/sec = 20–33% ✓</div>
+                    <div class="warn">At 5K RPS: 5K INSERTs/sec → approaching limit ⚠</div>
+                    <div class="bad">At 10K RPS: 10K INSERTs/sec → overloaded ✗</div>
+                </div>
+                <div class="sc-note"><strong>Fix at 5K+ RPS:</strong> (1) PgBouncer connection pooling — reduces
+                    connection overhead by 80%. (2) Batch inserts: buffer 100ms of job submissions, INSERT in batches
+                    (100× throughput). (3) Partitioning by <code>created_at</code> (monthly) — keeps active partition
+                    small. (4) Write-optimised instance (db.r5.large).
+                </div>
+            </div>
+            <div class="sc-card">
+                <div class="sc-comp">PostgreSQL — Worker Pickup</div>
+                <div class="sc-title">SKIP LOCKED Contention</div>
+                <div class="sc-math">
+                    <div class="eq">5 workers × 1 query/200ms = 25 queries/sec</div>
+                    <div class="ok">On partial index (QUEUED only): ~2ms P99 ✓</div>
+                    <div class="ok">At 100K total jobs, 10% QUEUED: index = 10K rows ✓</div>
+                    <div class="warn">At 10 instances × 20 workers: 200 concurrent skips → row contention ⚠</div>
+                </div>
+                <div class="sc-note"><strong>Fix at high worker concurrency:</strong> Add <code>LIMIT 1</code> strictly
+                    to worker query (already done). Partition jobs by <code>(tenant_id % N)</code> and assign workers to
+                    partitions — eliminates cross-worker contention. Add more worker instances; SKIP LOCKED scales
+                    linearly with no coordination overhead.
+                </div>
+            </div>
+            <div class="sc-card">
+                <div class="sc-comp">SQS — Message Pipeline</div>
+                <div class="sc-title">Publish + Consume Latency</div>
+                <div class="sc-math">
+                    <div class="eq">SQS FIFO: 3K msg/sec per message group</div>
+                    <div class="ok">At 1K RPS: 1K msg/sec ✓</div>
+                    <div class="warn">At 3K+ RPS with 1 message group: limit ⚠</div>
+                    <div class="ok">Fix: hash tenant_id into 10 message groups → 30K RPS ✓</div>
+                </div>
+                <div class="sc-note"><strong>SQS publish latency:</strong> ~15ms average. This is the dominant latency
+                    in the gateway happy path. If this is unacceptable, switch SQS to async fire-and-forget (gateway
+                    doesn't wait for SQS ACK). Tradeoff: risk of accepted job not reaching processor if SQS publish
+                    fails after DB write. Handled by a background reconciler that republishes jobs stuck in QUEUED with
+                    no SQS evidence.
+                </div>
+            </div>
+            <div class="sc-card">
+                <div class="sc-comp">Gateway — HTTP Throughput</div>
+                <div class="sc-title">Spring Boot + Virtual Threads</div>
+                <div class="sc-math">
+                    <div class="eq">Spring Boot 3.2 + Virtual Threads: ~5K–10K RPS (t2.micro)</div>
+                    <div class="ok">Filter chain: 5 Redis ops + 1 DB write per request ✓</div>
+                    <div class="ok">Lettuce async: Redis ops don't block thread ✓</div>
+                    <div class="warn">t2.micro baseline: 1 vCPU → CPU bound at ~2K RPS</div>
+                    <div class="ok">Fix: scale to t3.small (2 vCPU) or run 2× t2.micro behind ALB</div>
+                </div>
+                <div class="sc-note"><strong>Horizontal scaling strategy:</strong> Gateway is stateless — all state in
+                    Redis/Postgres. Add EC2 instances behind an ALB. Rate limit state in shared Redis stays correct
+                    because Lua scripts are atomic regardless of how many gateways run. Zero application changes needed.
+                </div>
+            </div>
+            <div class="sc-card">
+                <div class="sc-comp">Multi-Instance Coordination</div>
+                <div class="sc-title">Mentor Gap: "How do N servers share state?"</div>
+                <div class="sc-math">
+                    <div class="eq">Rate limit key: rl:bucket:{tenantId}</div>
+                    <div class="ok">Shared across ALL gateway instances via Redis ✓</div>
+                    <div class="eq">Idempotency key: idem:{tenantId}:{key}</div>
+                    <div class="ok">SETNX is atomic — one winner regardless of race ✓</div>
+                    <div class="eq">Abuse score: abuse:score:{tenantId}</div>
+                    <div class="ok">Single Redis value — all gateways read same score ✓</div>
+                </div>
+                <div class="sc-note"><strong>The answer interviewers want:</strong> "No in-memory state in the gateway.
+                    Every counter, every cache, every rate limit bucket lives in Redis. Adding a second gateway instance
+                    requires zero coordination — they both read from and write to the same Redis. The Lua scripts handle
+                    all atomicity. Rate limits are global, not per-instance."
+                </div>
+            </div>
+        </div>
+
+        <div class="callout good">
+            <strong>Scale story for your interview:</strong> "The current design handles ~500 RPS comfortably on
+            t2.micro. The first bottleneck at higher load is Postgres write throughput, which I'd address with PgBouncer
+            connection pooling and batch inserts — getting to ~5K RPS before needing instance scaling. Beyond that, the
+            gateway scales horizontally with zero code changes since all state is in Redis. Rate limiting stays correct
+            at any number of gateway instances because the Lua scripts are atomic on Redis."
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════
+         S8 — FAILURE MODES
+    ═══════════════════════════════════════════════════ -->
+    <section class="sec" id="s8">
+        <div class="sec-eye">Section 08 — Mentor Gap Addressed</div>
+        <div class="sec-title">Failure Mode Analysis — 6 Deep Dives</div>
+        <div class="sec-sub"><strong>"You touched failures, but not deeply enough."</strong> Every scenario: what
+            triggers it, what breaks, how the system responds, how you recover.
+        </div>
+
+        <div class="fm-list">
+
+            <div class="fm">
+                <div class="fm-hdr">
+                    <div class="fm-icon">⚡</div>
+                    <div class="fm-meta">
+                        <div class="fm-title">FM-1: Redis Partial Outage (Primary down, replica available)</div>
+                        <div class="fm-trigger">Trigger: AWS ElastiCache primary node failure. Failover in progress
+                            (~60s).
+                        </div>
+                    </div>
+                    <div class="fm-sev sev-p1">P1</div>
+                </div>
+                <div class="fm-body">
+                    <div>
+                        <div class="fm-col-title">What breaks</div>
+                        <div class="fm-col-body">
+                            Rate limit checks fail (Lua script executes on primary). Idempotency cache fails. Tenant
+                            auth cache fails. IP throttling fails. During failover window: all 4 Redis-dependent filters
+                            are unavailable.
+                        </div>
+                    </div>
+                    <div>
+                        <div class="fm-col-title">System response</div>
+                        <div class="fm-col-body">
+                            Circuit breaker detects Redis unavailable within 50ms. Each filter has a configured
+                            fallback: <strong>IpThrottle → FAIL_OPEN</strong> (log, pass through). <strong>TenantAuth →
+                            FAIL_OPEN</strong> (fall back to DB). <strong>RateLimit → FAIL_OPEN for non-payment,
+                            FAIL_CLOSED (503) for payment jobs</strong>. <strong>Idempotency → DB UNIQUE constraint
+                            only</strong>. System degrades gracefully — non-payment job submission works, payment
+                            submission returns 503.
+                        </div>
+                    </div>
+                    <div>
+                        <div class="fm-col-title">Recovery</div>
+                        <div class="fm-col-body">
+                            ElastiCache promotes replica in ~60s. Circuit breaker detects recovery. All filters resume
+                            Redis operations. <strong>Token bucket keys are rebuilt on first request per tenant</strong>
+                            — no data migration needed (bucket state is ephemeral). Alert: <code>redis_connection_failures
+                            > 5</code> fires PagerDuty within 30s of outage.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fm">
+                <div class="fm-hdr">
+                    <div class="fm-icon">🐘</div>
+                    <div class="fm-meta">
+                        <div class="fm-title">FM-2: Postgres Slow (Disk I/O saturation → query timeouts)</div>
+                        <div class="fm-trigger">Trigger: RDS I/O burst credit exhausted. All DB queries taking >5s.
+                        </div>
+                    </div>
+                    <div class="fm-sev sev-p0">P0</div>
+                </div>
+                <div class="fm-body">
+                    <div>
+                        <div class="fm-col-title">What breaks</div>
+                        <div class="fm-col-body">
+                            Job INSERT times out → Gateway returns 503. Worker pickup queries time out → workers idle
+                            (no new jobs claimed). Watchdog queries time out → stale locks not recovered. Queue depth
+                            grows unboundedly in SQS (processor can't consume fast enough).
+                        </div>
+                    </div>
+                    <div>
+                        <div class="fm-col-title">System response</div>
+                        <div class="fm-col-body">
+                            Spring Boot <code>HikariCP</code> connection pool: max connection wait = 3s → returns <code>503
+                            Service Unavailable</code> to clients rather than hanging. Workers enter <strong>exponential
+                            backoff</strong> on DB connection failures — poll every 5s instead of every 200ms, reducing
+                            DB load. SQS message visibility timeout ensures no SQS messages are lost (they become
+                            visible again after 30s and are reprocessed once DB recovers).
+                        </div>
+                    </div>
+                    <div>
+                        <div class="fm-col-title">Recovery + Prevention</div>
+                        <div class="fm-col-body">
+                            <strong>Immediate fix:</strong> Scale up RDS instance (vertical). <strong>Longer-term
+                            fix:</strong> Add PgBouncer to reduce connection overhead. Enable RDS Storage Autoscaling.
+                            Alert: <code>rds_database_connections = max_connections * 0.8</code> fires P1 before
+                            saturation. Add read replica for status-query endpoints (GET /jobs).
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fm">
+                <div class="fm-hdr">
+                    <div class="fm-icon">🔄</div>
+                    <div class="fm-meta">
+                        <div class="fm-title">FM-3: Worker Crash Loop (Handler throwing uncaught exceptions
+                            repeatedly)
+                        </div>
+                        <div class="fm-trigger">Trigger: Bad deploy introduces a null pointer in SendEmailHandler. All
+                            SEND_EMAIL jobs crash workers.
+                        </div>
+                    </div>
+                    <div class="fm-sev sev-p1">P1</div>
+                </div>
+                <div class="fm-body">
+                    <div>
+                        <div class="fm-col-title">What breaks</div>
+                        <div class="fm-col-body">
+                            Workers keep picking up SEND_EMAIL jobs, crashing immediately, releasing the lock. Watchdog
+                            sees the jobs as stale (locked_until expired) and re-queues them. Jobs cycle QUEUED → crash
+                            → QUEUED endlessly. <code>attempt_count</code> increments each time — eventually reaches
+                            <code>max_attempts</code> and jobs go DEAD.
+                        </div>
+                    </div>
+                    <div>
+                        <div class="fm-col-title">System response</div>
+                        <div class="fm-col-body">
+                            <strong>RetryDecisionService:</strong> detects <code>NullPointerException</code> as a <code>FatalException</code>
+                            → marks job DEAD immediately, skips retry. Prevents the endless cycle. <strong>Micrometer
+                            counter:</strong> <code>flowshield_dead_jobs_total{type="SEND_EMAIL"}</code> spikes →
+                            CloudWatch alarm fires P1 within 2 minutes. Other job types (PROCESS_PAYMENT) unaffected —
+                            workers skip SEND_EMAIL type jobs.
+                        </div>
+                    </div>
+                    <div>
+                        <div class="fm-col-title">Recovery</div>
+                        <div class="fm-col-body">
+                            Fix the handler bug → deploy → DEAD jobs can be <strong>requeued via admin API</strong>
+                            (<code>POST /api/v1/admin/jobs/requeue?status=DEAD&type=SEND_EMAIL</code>). This resets
+                            <code>attempt_count=0, status=QUEUED, visible_after=now()</code> for all affected jobs. Zero
+                            data loss — jobs are in DB, just in DEAD state.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fm">
+                <div class="fm-hdr">
+                    <div class="fm-icon">🌐</div>
+                    <div class="fm-meta">
+                        <div class="fm-title">FM-4: Network Partition (Gateway ↔ Processor network split)</div>
+                        <div class="fm-trigger">Trigger: AWS AZ-level network issue. Gateway in AZ-1a, Processor in
+                            AZ-1b.
+                        </div>
+                    </div>
+                    <div class="fm-sev sev-p1">P1</div>
+                </div>
+                <div class="fm-body">
+                    <div>
+                        <div class="fm-col-title">What breaks</div>
+                        <div class="fm-col-body">
+                            SQS publish from Gateway may fail (SQS is regional but network path is disrupted). Jobs are
+                            written to Postgres (QUEUED) but SQS message never sent. Processor doesn't know about these
+                            jobs — they sit in QUEUED forever, never picked up.
+                        </div>
+                    </div>
+                    <div>
+                        <div class="fm-col-title">System response</div>
+                        <div class="fm-col-body">
+                            <strong>The reconciler safety net:</strong> A scheduled job in the Processor (every 5
+                            minutes) queries: <code>SELECT id FROM jobs WHERE status='QUEUED' AND created_at &lt;
+                            now()-interval '5 minutes' AND locked_by IS NULL</code>. These are "orphaned" jobs — written
+                            to DB but never triggered via SQS. The reconciler republishes their job_ids to SQS. <strong>This
+                            is the defense against Gateway→SQS failures of any cause</strong>.
+                        </div>
+                    </div>
+                    <div>
+                        <div class="fm-col-title">Recovery</div>
+                        <div class="fm-col-body">
+                            Network partition resolves. Reconciler runs and republishes all orphaned jobs within 5
+                            minutes. Jobs execute with a max delay of 5 minutes — acceptable for non-real-time job
+                            types. <strong>SDE-2 design principle:</strong> "Don't rely on SQS for correctness. Use it
+                            for performance. The DB is the source of truth. Any job in the DB will eventually execute."
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fm">
+                <div class="fm-hdr">
+                    <div class="fm-icon">💣</div>
+                    <div class="fm-meta">
+                        <div class="fm-title">FM-5: Tenant Burst Attack (Coordinated DDoS from a single API key)</div>
+                        <div class="fm-trigger">Trigger: Rogue tenant scripts 10,000 concurrent requests/second from 50
+                            IPs.
+                        </div>
+                    </div>
+                    <div class="fm-sev sev-p1">P1</div>
+                </div>
+                <div class="fm-body">
+                    <div>
+                        <div class="fm-col-title">What breaks</div>
+                        <div class="fm-col-body">
+                            Rate limiter caps tenant at their plan limit (e.g., 1000/min for ENTERPRISE). The remaining
+                            9,000+ requests/sec still hit the filter chain, executing TenantAuth filter (Redis lookup)
+                            and IP throttle check. At 10K RPS, this is 10K Redis reads/sec from attack traffic alone.
+                            Redis CPU spikes. Legitimate tenants start seeing higher Redis latency.
+                        </div>
+                    </div>
+                    <div>
+                        <div class="fm-col-title">System response</div>
+                        <div class="fm-col-body">
+                            <strong>Layer 1 — IP throttle fires first:</strong> 50 IPs each hitting 200 req/min → all 50
+                            IPs blocked within 60s. Subsequent requests from those IPs rejected at filter ①, never
+                            reaching auth or rate limit. <strong>Layer 2 — Abuse score:</strong> >500 req/min from any
+                            IP → <code>abuse:score:{tenantId} += 10</code>. Score reaches 80 within 8 minutes → tenant
+                            blocked at filter ③. <strong>Layer 3 — Manual:</strong> Admin blocks tenant via API.
+                        </div>
+                    </div>
+                    <div>
+                        <div class="fm-col-title">Recovery</div>
+                        <div class="fm-col-body">
+                            Tenant suspended. Admin investigates (security_events table has full IP history). If
+                            legitimate surge: re-enable with temporary limit increase. If malicious: revoke API key,
+                            issue new key on request. <strong>SLA impact for other tenants during attack:</strong> &lt;2ms
+                            increase in P99 latency (IP throttle is a single Redis INCR — fast even under load).
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fm">
+                <div class="fm-hdr">
+                    <div class="fm-icon">🔁</div>
+                    <div class="fm-meta">
+                        <div class="fm-title">FM-6: SQS Unavailability (Regional SQS outage)</div>
+                        <div class="fm-trigger">Trigger: AWS SQS service disruption. Gateway can write to DB but not
+                            publish to SQS.
+                        </div>
+                    </div>
+                    <div class="fm-sev sev-p2">P2</div>
+                </div>
+                <div class="fm-body">
+                    <div>
+                        <div class="fm-col-title">What breaks</div>
+                        <div class="fm-col-body">
+                            Gateway's <code>JobController.publish()</code> throws <code>SqsException</code> after
+                            writing to DB. Job is in QUEUED state in Postgres but Processor has no trigger to process
+                            it. If Gateway returns 503: client retries, idempotency key prevents duplicate DB entry. Job
+                            is orphaned until reconciler runs.
+                        </div>
+                    </div>
+                    <div>
+                        <div class="fm-col-title">System response</div>
+                        <div class="fm-col-body">
+                            <strong>Decision:</strong> Gateway catches <code>SqsException</code>, logs it with job_id,
+                            and <strong>still returns 202 Accepted</strong> to the client. The DB write is the
+                            commitment. Job will be processed — just delayed by up to 5 minutes until the reconciler
+                            picks it up. Client does not see a failure. <strong>Alternative (rejected):</strong> Return
+                            503 on SQS failure. Worse UX, same outcome — client retries and idempotency prevents
+                            duplicate. The 202 approach is more honest: we accepted your job, it will be processed.
+                        </div>
+                    </div>
+                    <div>
+                        <div class="fm-col-title">Recovery</div>
+                        <div class="fm-col-body">
+                            SQS recovers. Reconciler (runs every 5min) finds orphaned QUEUED jobs, republishes to SQS.
+                            All jobs processed with &lt;5min delay. <strong>Alert:</strong> <code>sqs_publish_errors >
+                            10 in 60s</code> → P2 alert. Not P0 because jobs are safe in DB and will self-heal.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════
+         S9 — SECURITY LAYER
+    ═══════════════════════════════════════════════════ -->
+    <section class="sec" id="s9">
+        <div class="sec-eye">Section 09 — Mentor Gap Addressed</div>
+        <div class="sec-title">Security Layer — IP Throttling + Abuse Detection</div>
+        <div class="sec-sub"><strong>"No IP-based limiting, no bot detection — huge gap."</strong> Here's the
+            implementation.
+        </div>
+
+        <p>The security layer is not a single component — it's a set of checks distributed across the filter chain, each
+            catching a different threat model. The key principle: <strong>checks that require no DB access run
+                first</strong>. Expensive checks (DB lookups) only run if cheap checks pass.</p>
+
+        <div class="sec-layer">
+            <div class="sl-hdr">
+                <div class="sl-step">S1</div>
+                <div class="sl-name">IP-Based Throttling — First Line of Defense</div>
+                <div class="sl-badge sl-core">CORE</div>
+            </div>
+            <div class="sl-body">
+                <div>
+                    <div class="sl-col-title">Implementation</div>
+                    <div class="sl-col-body">
+                        Redis fixed-window counter per IP. Key: <code>ip:throttle:{ip}:{window}</code> where window =
+                        <code>floor(unix_ts / 60)</code>.
+                        <br><br>
+                        <strong>Threshold 1 (soft):</strong> >100 req/min → add to watchlist
+                        (<code>ip:watchlist:{ip}</code>, TTL 10min)<br>
+                        <strong>Threshold 2 (hard):</strong> >200 req/min → 429 immediately. No further processing.<br>
+                        <strong>Threshold 3 (abuse):</strong> >500 req/min → 429 + increment tenant abuse score + write
+                        security_event
+                        <br><br>
+                        IP extraction: reads <code>X-Forwarded-For</code> header, takes the <em>last</em> IP in the
+                        chain (the one added by our load balancer — not spoofable by clients). Falls back to <code>request.getRemoteAddr()</code>.
+                    </div>
+                </div>
+                <div>
+                    <div class="sl-col-title">Why This Threshold Math</div>
+                    <div class="sl-col-body">
+                        A legitimate developer testing their integration will send <100 req/min. A retry loop bug might
+                        send 100–200 req/min (soft block, investigate). A DDoS script typically sends 500+ req/min from
+                        each IP. The thresholds are tuned to catch abuse while not blocking legitimate heavy users.
+                        <br><br>
+                        <strong>IP vs Tenant rate limiting:</strong> IP limiting protects against unauthenticated abuse
+                        (pre-auth attacks). Tenant rate limiting protects against authenticated overuse. Both are
+                        necessary. A rogue tenant using 50 different IPs bypasses per-IP limits — that's why tenant rate
+                        limiting at the next layer is essential.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sec-layer">
+            <div class="sl-hdr">
+                <div class="sl-step">S2</div>
+                <div class="sl-name">API Key Abuse Detection — Scoring System</div>
+                <div class="sl-badge sl-core">CORE</div>
+            </div>
+            <div class="sl-body">
+                <div>
+                    <div class="sl-col-title">Implementation</div>
+                    <div class="sl-col-body">
+                        <code>abuse:score:{tenantId}</code> stored in Redis as an integer 0–100.
+                        <br><br>
+                        <strong>Score increments:</strong><br>
+                        +5 for each rate-limit hit (above plan limit)<br>
+                        +10 for IP flagged as high-volume<br>
+                        +15 for auth failures with same API key<br>
+                        +20 for sending malformed payloads repeatedly<br>
+                        <br>
+                        <strong>Score thresholds:</strong><br>
+                        0–49: Normal operation<br>
+                        50–79: Override plan → FREE tier limits temporarily<br>
+                        80–100: Block all requests → 403
+                        <br><br>
+                        <strong>Score decay:</strong> TTL-based. Score key set with TTL = score × 60 seconds. A score of
+                        80 decays fully in 80 minutes if no new incidents.
+                    </div>
+                </div>
+                <div>
+                    <div class="sl-col-title">Why Scoring vs Hard Block</div>
+                    <div class="sl-col-body">
+                        Hard blocking on first offense causes false positives. A misconfigured client hitting the rate
+                        limit 10 times shouldn't be blocked — they should be throttled to FREE tier until they fix their
+                        code. A genuine attacker who persists gets blocked.
+                        <br><br>
+                        <strong>Security events feed:</strong> Every score increment writes to
+                        <code>security_events</code> table (tenant_id, event_type, source_ip, details). The React
+                        dashboard shows this as a live feed. Operators can see the pattern — "same tenant hit rate limit
+                        50 times from 5 IPs in 10 minutes" — and decide to manually block or contact the tenant.
+                        <br><br>
+                        <strong>What this signals to an interviewer:</strong> You've thought about the operational side
+                        of security. Not just "block the bad guys" but "give operators visibility to understand what's
+                        happening and make informed decisions."
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sec-layer">
+            <div class="sl-hdr">
+                <div class="sl-step">S3</div>
+                <div class="sl-name">Additional Hardening Measures</div>
+                <div class="sl-badge sl-extra">EXTRA</div>
+            </div>
+            <div class="sl-body">
+                <div>
+                    <div class="sl-col-title">Request Fingerprinting</div>
+                    <div class="sl-col-body">
+                        <strong>Bot detection signal:</strong> Legitimate API clients typically have consistent <code>User-Agent</code>
+                        headers, consistent header ordering, and do not send unusual headers. A Redis HSET stores:
+                        <code>fingerprint:{tenantId}</code> → {user_agent, header_set_hash, first_seen}. When a tenant's
+                        request fingerprint changes dramatically (different language SDK suddenly, no User-Agent,
+                        unusual headers) → abuse score +5. Not a hard block — a signal.
+                        <br><br>
+                        <strong>Payload anomaly:</strong> Job payloads are validated against their type's JSON Schema. A
+                        payload consistently failing validation (different field names, wrong types) suggests automated
+                        tooling probing the API → score +3 per failure. After 5 failures: 400 with <code>"Repeated
+                        validation failure — contact support"</code>.
+                    </div>
+                </div>
+                <div>
+                    <div class="sl-col-title">Manual Block + Allowlist</div>
+                    <div class="sl-col-body">
+                        Admin API: <code>POST /api/v1/admin/security/block-ip</code> → sets <code>ip:blocked:{ip} =
+                        1</code> in Redis with 24h TTL + writes to <code>security_events</code>.
+                        <br><br>
+                        IpThrottleFilter checks <code>ip:blocked:{ip}</code> before any other check. 403 immediately if
+                        present.
+                        <br><br>
+                        <code>POST /api/v1/admin/security/allowlist-tenant</code> → sets <code>tenant:allowlisted:{tenantId}
+                        = 1</code>. Allowlisted tenants bypass IP throttle and abuse detection (but still subject to
+                        plan rate limits). Use case: trusted partner running batch migrations.
+                        <br><br>
+                        <strong>Note on scope:</strong> Geo-blocking and threat intelligence (mentor's "Full" option)
+                        are left for v2. These require external APIs (MaxMind GeoIP, AbuseIPDB) and add ~2 weeks of work
+                        with marginal benefit for a portfolio project. Document as "v2 enhancements" in README.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════
+         S10 — OBSERVABILITY
+    ═══════════════════════════════════════════════════ -->
+    <section class="sec" id="s10">
+        <div class="sec-eye">Section 10 — Mentor Gap Addressed</div>
+        <div class="sec-title">Observability — RED Metrics, Dashboards, Alerts</div>
+        <div class="sec-sub"><strong>"Metrics exist" is not enough.</strong> Here are the specific metrics, their
+            labels, their alert thresholds, and what each one tells you.
+        </div>
+
+        <p><strong>RED Framework</strong> — Rate, Errors, Duration. Every service exposes these three dimensions. Every
+            engineer on the team can understand any service's health from these three numbers.</p>
+
+        <div class="red-grid">
+            <div class="red-card">
+                <div class="red-label red-r">R</div>
+                <div class="red-name">Rate — requests per second</div>
+                <div class="red-metrics">
+                    <div class="red-metric"><code>flowshield_requests_total</code> — labels: tenant_id, endpoint,
+                        result(allowed/rate_limited/blocked/error)
+                    </div>
+                    <div class="red-metric"><code>flowshield_jobs_submitted_total</code> — labels: tenant_id, job_type,
+                        priority_class
+                    </div>
+                    <div class="red-metric"><code>flowshield_jobs_processed_total</code> — labels: tenant_id, job_type,
+                        status(done/failed/dead)
+                    </div>
+                    <div class="red-metric"><code>flowshield_rate_limit_decisions_total</code> — labels: tenant_id,
+                        decision(allow/deny), plan
+                    </div>
+                    <div class="red-metric"><code>flowshield_security_events_total</code> — labels: event_type,
+                        tenant_id
+                    </div>
+                </div>
+            </div>
+            <div class="red-card">
+                <div class="red-label red-e">E</div>
+                <div class="red-name">Errors — failure rate by type</div>
+                <div class="red-metrics">
+                    <div class="red-metric"><code>flowshield_errors_total</code> — labels:
+                        component(gateway/worker/watchdog), error_type
+                    </div>
+                    <div class="red-metric"><code>flowshield_dead_jobs_total</code> — labels: tenant_id, job_type,
+                        final_error_class
+                    </div>
+                    <div class="red-metric"><code>flowshield_auth_failures_total</code> — labels:
+                        failure_reason(invalid_key/inactive_tenant)
+                    </div>
+                    <div class="red-metric"><code>flowshield_idempotency_hits_total</code> — labels: tenant_id
+                        (duplicates caught)
+                    </div>
+                    <div class="red-metric"><code>flowshield_watchdog_recoveries_total</code> — (stale lock recoveries;
+                        should be near zero)
+                    </div>
+                </div>
+            </div>
+            <div class="red-card">
+                <div class="red-label red-d">D</div>
+                <div class="red-name">Duration — latency histograms</div>
+                <div class="red-metrics">
+                    <div class="red-metric"><code>flowshield_request_duration_seconds</code> — labels: endpoint,
+                        status_code (P50/P95/P99)
+                    </div>
+                    <div class="red-metric"><code>flowshield_ratelimit_check_duration_seconds</code> — Lua script RTT
+                        (must be &lt;1ms P99)
+                    </div>
+                    <div class="red-metric"><code>flowshield_job_queue_wait_seconds</code> — labels: tenant_id,
+                        priority_class (time QUEUED→PROCESSING)
+                    </div>
+                    <div class="red-metric"><code>flowshield_job_execution_duration_seconds</code> — labels: job_type,
+                        status
+                    </div>
+                    <div class="red-metric"><code>flowshield_sqs_publish_duration_seconds</code> — SQS publish latency
+                        (baseline ~15ms)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p style="margin-top:24px;"><strong>Gauge Metrics (point-in-time values)</strong></p>
+        <div class="code" style="padding:18px 24px;">
+<pre>
+<span class="c-fn">flowshield_queue_depth</span>               <span class="c-cm">labels: tenant_id, priority_class  ← live QUEUED count per tenant</span>
+<span class="c-fn">flowshield_worker_active_count</span>        <span class="c-cm">labels: worker_pool                ← how many workers are processing right now</span>
+<span class="c-fn">flowshield_redis_connection_pool_active</span> <span class="c-cm">                                   ← Lettuce pool utilization</span>
+<span class="c-fn">flowshield_db_connection_pool_active</span>  <span class="c-cm">                                   ← HikariCP utilization</span>
+<span class="c-fn">flowshield_abuse_score_current</span>       <span class="c-cm">labels: tenant_id                  ← current abuse score (0-100)</span>
+</pre>
+        </div>
+
+        <p style="margin-top:20px;"><strong>CloudWatch Alerts</strong></p>
+        <table class="at">
+            <thead>
+            <tr>
+                <th>Alert</th>
+                <th>Condition (PromQL → CloudWatch)</th>
+                <th>Sev</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>GatewayP99High</td>
+                <td><code>request_duration_p99 &gt; 500ms</code> for 3m</td>
+                <td class="p0">P0</td>
+                <td>Page on-call. Check Redis latency first (most common cause). Feature flag: disable abuse detection
+                    (least critical filter).
+                </td>
+            </tr>
+            <tr>
+                <td>RateLimitOverhead</td>
+                <td><code>ratelimit_check_p99 &gt; 5ms</code> for 5m</td>
+                <td class="p1">P1</td>
+                <td>Redis hot key or network issue. Check ElastiCache CPU. Consider FAIL_OPEN temporary.</td>
+            </tr>
+            <tr>
+                <td>CriticalJobWait</td>
+                <td><code>queue_wait_p99{priority="CRITICAL"} &gt; 45s</code> for 2m</td>
+                <td class="p0">P0</td>
+                <td>Worker starvation or DB slow. Scale worker count immediately. Check Postgres.</td>
+            </tr>
+            <tr>
+                <td>DeadJobSpike</td>
+                <td><code>rate(dead_jobs[5m]) &gt; 5/min</code> for 3m</td>
+                <td class="p1">P1</td>
+                <td>Handler bug or downstream service outage. Check <code>last_error</code> in DB. May need feature-flag
+                    to disable specific job type.
+                </td>
+            </tr>
+            <tr>
+                <td>WatchdogRecoveries</td>
+                <td><code>rate(watchdog_recoveries[5m]) &gt; 2/min</code></td>
+                <td class="p1">P1</td>
+                <td>Workers crashing mid-job. Check processor logs. May indicate Postgres connection drops.</td>
+            </tr>
+            <tr>
+                <td>AbuseScoreHigh</td>
+                <td><code>max(abuse_score_current) &gt; 70</code></td>
+                <td class="p2">P2</td>
+                <td>Investigate — rogue tenant or misconfigured SDK. Not urgent unless score approaches 80 (block
+                    threshold).
+                </td>
+            </tr>
+            <tr>
+                <td>RedisDown</td>
+                <td>Health check failing for &gt;30s</td>
+                <td class="p1">P1</td>
+                <td>ElastiCache failover in progress. System running in degraded mode (FAIL_OPEN). Confirm behavior is
+                    correct.
+                </td>
+            </tr>
+            <tr>
+                <td>DbConnectionSaturation</td>
+                <td><code>db_pool_active / max_pool_size &gt; 0.85</code></td>
+                <td class="p1">P1</td>
+                <td>Connection pool near exhaustion. Scale DB instance or reduce pool wait time. Add read replica.</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════
+         S11 — REPO STRUCTURE
+    ═══════════════════════════════════════════════════ -->
+    <section class="sec" id="s11">
+        <div class="sec-eye">Section 11</div>
+        <div class="sec-title">Repository Structure — Monorepo Layout</div>
+        <div class="sec-sub">Two deployable modules. One shared library. One React dashboard. Gradle multi-project
+            build.
+        </div>
+
+        <div class="repo">
+<pre>
+<span class="dir">flowshield/</span>                                   <span
+        class="note">← root: single GitHub repo</span>
+│
+├── <span class="file">build.gradle.kts</span>                           <span class="note">← root Gradle config, shared deps</span>
+├── <span class="file">settings.gradle.kts</span>                        <span class="note">← includes: 'flowshield-common', 'flowshield-gateway', 'flowshield-processor'</span>
+├── <span class="file">docker-compose.yml</span>                         <span class="note">← local dev: Postgres, Redis, LocalStack (SQS emulator)</span>
+├── <span class="file">docker-compose.test.yml</span>                    <span class="note">← CI: adds Testcontainers deps</span>
+│
+├── <span class="dir">flowshield-common/</span>                         <span class="note">← shared library (no Spring Boot, just Java)</span>
+│   └── src/main/java/com/flowshield/common/
+│       ├── <span class="em">domain/</span>
+│       │   ├── <span class="file">Job.java</span>                       <span class="note">← JPA entity</span>
+│       │   ├── <span class="file">Tenant.java</span>                    <span class="note">← JPA entity</span>
+│       │   ├── <span class="file">TenantPlan.java</span>                <span class="note">← JPA entity</span>
+│       │   └── <span class="file">JobEvent.java</span>                  <span class="note">← JPA entity</span>
+│       ├── <span class="em">dto/</span>
+│       │   ├── <span class="file">JobSubmissionRequest.java</span>
+│       │   ├── <span class="file">JobStatusResponse.java</span>
+│       │   └── <span class="file">TenantContext.java</span>             <span class="note">← set by TenantAuthFilter, read by controller</span>
+│       └── <span class="em">constants/</span>
+│           ├── <span class="file">JobStatus.java</span>                 <span class="note">← QUEUED, PROCESSING, DONE, FAILED, DEAD, CANCELLED</span>
+│           └── <span class="file">PriorityClass.java</span>             <span
+        class="note">← CRITICAL, NORMAL, BULK</span>
+│
+├── <span class="dir">flowshield-gateway/</span>                        <span class="note">← Spring Boot fat JAR #1 — deploys to EC2 #1</span>
+│   └── src/main/
+│       ├── java/com/flowshield/gateway/
+│       │   ├── <span class="em">filter/</span>
+│       │   │   ├── <span class="file">IpThrottleFilter.java</span>
+│       │   │   ├── <span class="file">TenantAuthFilter.java</span>
+│       │   │   ├── <span class="file">AbuseDetectionFilter.java</span>
+│       │   │   ├── <span class="file">RateLimitFilter.java</span>
+│       │   │   └── <span class="file">IdempotencyFilter.java</span>
+│       │   ├── <span class="em">controller/</span>
+│       │   │   ├── <span class="file">JobController.java</span>
+│       │   │   └── <span class="file">AdminController.java</span>
+│       │   ├── <span class="em">security/</span>
+│       │   │   ├── <span class="file">AbuseScoreService.java</span>
+│       │   │   └── <span class="file">SecurityEventService.java</span>
+│       │   ├── <span class="em">ratelimit/</span>
+│       │   │   ├── <span class="file">TokenBucketService.java</span>
+│       │   │   └── <span class="file">RateLimitResult.java</span>
+│       │   ├── <span class="em">websocket/</span>
+│       │   │   └── <span class="file">MetricsWebSocketHandler.java</span>  <span class="note">← pushes live stats to dashboard</span>
+│       │   └── <span class="em">config/</span>
+│       │       ├── <span class="file">FilterChainConfig.java</span>        <span class="note">← registers filters in order</span>
+│       │       ├── <span class="file">RedisConfig.java</span>
+│       │       └── <span class="file">SqsConfig.java</span>
+│       └── resources/
+│           ├── <span class="em">lua/</span>
+│           │   ├── <span class="file">token_bucket.lua</span>
+│           │   └── <span class="file">ip_throttle.lua</span>
+│           └── <span class="file">application.yml</span>               <span class="note">← env-var driven, no secrets hardcoded</span>
+│
+├── <span class="dir">flowshield-processor/</span>                      <span class="note">← Spring Boot fat JAR #2 — deploys to EC2 #2</span>
+│   └── src/main/java/com/flowshield/processor/
+│       ├── <span class="em">consumer/</span>
+│       │   └── <span class="file">SqsJobConsumer.java</span>
+│       ├── <span class="em">worker/</span>
+│       │   ├── <span class="file">WorkerOrchestrator.java</span>
+│       │   ├── <span class="file">HeartbeatService.java</span>
+│       │   └── <span class="file">RetryDecisionService.java</span>
+│       ├── <span class="em">handler/</span>
+│       │   ├── <span class="file">JobHandler.java</span>               <span class="note">← interface</span>
+│       │   ├── <span class="file">SendEmailHandler.java</span>
+│       │   ├── <span class="file">ProcessPaymentHandler.java</span>
+│       │   └── <span class="file">GenerateReportHandler.java</span>
+│       ├── <span class="em">scheduler/</span>
+│       │   ├── <span class="file">WatchdogScheduler.java</span>
+│       │   └── <span class="file">ReconcilerScheduler.java</span>       <span class="note">← finds orphaned QUEUED jobs, republishes to SQS</span>
+│       └── <span class="em">registry/</span>
+│           └── <span class="file">JobHandlerRegistry.java</span>        <span class="note">← auto-discovers @JobType handlers via @Component</span>
+│
+├── <span class="dir">flowshield-dashboard/</span>                      <span class="note">← React 18 + Vite — deploys to S3 + CloudFront</span>
+│   ├── <span class="file">package.json</span>
+│   ├── <span class="file">vite.config.ts</span>
+│   └── src/
+│       ├── <span class="teal">pages/</span>
+│       │   ├── <span class="file">Overview.tsx</span>               <span class="note">← live RPS chart, allow/deny ratio, top tenants</span>
+│       │   ├── <span class="file">Tenants.tsx</span>                <span class="note">← tenant CRUD, plan assignment, quota view</span>
+│       │   └── <span class="file">Security.tsx</span>              <span class="note">← live security events feed, IP block management</span>
+│       ├── <span class="teal">components/</span>
+│       │   ├── <span class="file">TrafficChart.tsx</span>           <span
+        class="note">← Recharts time-series for RPS</span>
+│       │   ├── <span class="file">TenantCard.tsx</span>
+│       │   └── <span class="file">SecurityEventFeed.tsx</span>      <span class="note">← WebSocket live feed</span>
+│       └── <span class="teal">hooks/</span>
+│           ├── <span class="file">useMetrics.ts</span>             <span class="note">← TanStack Query, polls /admin/metrics/overview every 5s</span>
+│           └── <span class="file">useWebSocket.ts</span>           <span class="note">← SockJS+STOMP for live security events</span>
+│
+├── <span class="dir">load-tests/</span>
+│   ├── <span class="file">rate_limit_test.js</span>                     <span class="note">← k6: 500 VUs, FREE plan, assert 0% false-allows</span>
+│   ├── <span class="file">multi_tenant_fairness.js</span>               <span class="note">← k6: 3 tenants, assert ENTERPRISE P99 &lt;30s</span>
+│   └── <span class="file">attack_simulation.js</span>                   <span class="note">← k6: DDoS pattern, assert IP throttle fires</span>
+│
+└── <span class="dir">.github/workflows/</span>
+    ├── <span class="file">ci.yml</span>                                 <span
+        class="note">← on PR: test both modules</span>
+    └── <span class="file">deploy.yml</span>                             <span class="note">← on main push: build JARs, deploy to EC2 via CodeDeploy</span>
+</pre>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════
+         S12 — IMPLEMENTATION PHASES
+    ═══════════════════════════════════════════════════ -->
+    <section class="sec" id="s12">
+        <div class="sec-eye">Section 12</div>
+        <div class="sec-title">Implementation Phases — 6 Phases, Week by Week</div>
+        <div class="sec-sub">Each phase produces a deployable, testable milestone. Nothing is left "to be completed
+            later."
+        </div>
+
+        <div class="phase-wrap">
+
+            <!-- PHASE 1 -->
+            <div class="phase">
+                <div class="phase-hdr">
+                    <div class="ph-n">1</div>
+                    <div class="ph-meta">
+                        <div class="ph-title">Infrastructure Foundation + Schema</div>
+                        <div class="ph-desc">Gradle multi-project build · Docker Compose · All 5 DB tables · No
+                            application logic yet
+                        </div>
+                    </div>
+                    <div class="ph-dur">Week 1</div>
+                </div>
+                <div class="phase-body">
+                    <div class="ticket">
+                        <div class="t-hdr">
+                            <div class="t-id">FS-P1-01</div>
+                            <div class="t-title">Gradle multi-project build setup</div>
+                            <div class="t-badge tb-infra">INFRA</div>
+                        </div>
+                        <div class="t-body">
+                            <div class="t-ac">
+                                <ul>
+                                    <li><code>settings.gradle.kts</code> includes 3 subprojects. Root build.gradle.kts
+                                        defines shared Spring Boot BOM dependency management.
+                                    </li>
+                                    <li><code>./gradlew :flowshield-gateway:bootRun</code> starts the gateway. <code>:flowshield-processor:bootRun</code>
+                                        starts the processor. Both compile independently.
+                                    </li>
+                                    <li><code>flowshield-common</code> produces a plain JAR (no <code>bootJar</code>).
+                                        Gateway and Processor declare <code>implementation
+                                            project(':flowshield-common')</code>.
+                                    </li>
+                                    <li><strong>Verify: <code>./gradlew build</code> from root produces 2 fat JARs + 1
+                                        common JAR.</strong></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ticket">
+                        <div class="t-hdr">
+                            <div class="t-id">FS-P1-02</div>
+                            <div class="t-title">Docker Compose: Postgres + Redis + LocalStack (SQS)</div>
+                            <div class="t-badge tb-infra">INFRA</div>
+                        </div>
+                        <div class="t-body">
+                            <div class="t-ac">
+                                <ul>
+                                    <li>Postgres 16, Redis 7, LocalStack (for SQS emulation in local dev). All healthy
+                                        checks defined.
+                                    </li>
+                                    <li><code>./docker-compose up -d</code> → all three services running. <code>redis-cli
+                                        ping</code> returns PONG. <code>psql</code> connects. LocalStack SQS endpoint at
+                                        <code>http://localhost:4566</code>.
+                                    </li>
+                                    <li>LocalStack auto-creates <code>flowshield-jobs.fifo</code> queue on startup via
+                                        init script.
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ticket">
+                        <div class="t-hdr">
+                            <div class="t-id">FS-P1-03</div>
+                            <div class="t-title">Flyway migrations: all 5 tables with indexes</div>
+                            <div class="t-badge tb-infra">INFRA</div>
+                        </div>
+                        <div class="t-body">
+                            <div class="t-ac">
+                                <ul>
+                                    <li><code>V1__flowshield_schema.sql</code> — creates tenant_plans, tenants, jobs,
+                                        job_events, security_events. Seeds 3 plan rows.
+                                    </li>
+                                    <li>All 6 indexes present and verified via <code>SELECT indexname FROM pg_indexes
+                                        WHERE tablename='jobs'</code>.
+                                    </li>
+                                    <li>UNIQUE constraint on <code>(tenant_id, idempotency_key)</code> enforced: attempt
+                                        two INSERTs with same values → <code>UniqueViolationException</code>.
+                                    </li>
+                                    <li>Flyway idempotent: run migrations twice → no error ("already applied").</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="phase-milestone">Phase 1 milestone: <code>./gradlew build</code> green. <code>docker-compose
+                        up</code> → 3 services healthy. DB schema matches spec exactly. Flyway runs clean.
+                    </div>
+                </div>
+            </div>
+
+            <!-- PHASE 2 -->
+            <div class="phase">
+                <div class="phase-hdr">
+                    <div class="ph-n">2</div>
+                    <div class="ph-meta">
+                        <div class="ph-title">Gateway — Auth + Rate Limiting + Idempotency</div>
+                        <div class="ph-desc">All 5 filters · Token Bucket Lua · Two-layer idempotency · Filter chain in
+                            correct order
+                        </div>
+                    </div>
+                    <div class="ph-dur">Week 2–3</div>
+                </div>
+                <div class="phase-body">
+                    <div class="ticket">
+                        <div class="t-hdr">
+                            <div class="t-id">FS-P2-01</div>
+                            <div class="t-title">TenantAuthFilter with Redis caching</div>
+                            <div class="t-badge tb-feat">FEATURE</div>
+                        </div>
+                        <div class="t-body">
+                            <div class="t-ac">
+                                <ul>
+                                    <li>SHA-256 API key hash. Redis GET <code>tenant:{hash}</code> first (5min TTL). DB
+                                        fallback on miss.
+                                    </li>
+                                    <li>TenantContext stored in request attribute <code>"tenantContext"</code>. All
+                                        downstream filters read from here.
+                                    </li>
+                                    <li>Testcontainers integration test: valid key → 200, invalid → 401, inactive tenant
+                                        → 403.
+                                    </li>
+                                    <li><strong>Important:</strong> API key never logged. Only the SHA-256 hash is
+                                        logged.
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ticket">
+                        <div class="t-hdr">
+                            <div class="t-id">FS-P2-02</div>
+                            <div class="t-title">RateLimitFilter — Redis Lua token_bucket.lua</div>
+                            <div class="t-badge tb-feat">FEATURE</div>
+                        </div>
+                        <div class="t-body">
+                            <div class="t-ac">
+                                <ul>
+                                    <li>Lua script loaded from classpath on startup. SHA cached via <code>SCRIPT
+                                        LOAD</code>. Executed via <code>EVALSHA</code> on every request.
+                                    </li>
+                                    <li>Script uses <code>redis.call('TIME')</code> internally — no app-layer clock
+                                        passed.
+                                    </li>
+                                    <li>Circuit breaker (Resilience4j): if Redis fails 3 times in 10s → open circuit,
+                                        FAIL_OPEN or FAIL_CLOSED based on job type config.
+                                    </li>
+                                    <li>Micrometer timer wraps every Lua call: <code>flowshield_ratelimit_check_duration_seconds</code>.
+                                    </li>
+                                    <li><strong>k6 test (run immediately after build):</strong> FREE tenant, 500
+                                        concurrent requests, 60s → exactly 10 allowed. 0% false-allows. Record this
+                                        number.
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ticket">
+                        <div class="t-hdr">
+                            <div class="t-id">FS-P2-03</div>
+                            <div class="t-title">IdempotencyFilter — two-layer defense</div>
+                            <div class="t-badge tb-feat">FEATURE</div>
+                        </div>
+                        <div class="t-body">
+                            <div class="t-ac">
+                                <ul>
+                                    <li>Redis SETNX <code>idem:{tenantId}:{key}</code> EX 86400. Value stores job_id as
+                                        string.
+                                    </li>
+                                    <li>Cache hit: fetch job from DB, return 200 immediately. Zero controller
+                                        execution.
+                                    </li>
+                                    <li>DB UNIQUE constraint handles cold-cache race: catch <code>DataIntegrityViolationException</code>,
+                                        convert to 200.
+                                    </li>
+                                    <li><strong>Race condition test (Testcontainers):</strong> 50 threads, same tenant +
+                                        idempotency key, simultaneous POST → exactly 1 row in DB, 49 responses return
+                                        same job_id.
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ticket">
+                        <div class="t-hdr">
+                            <div class="t-id">FS-P2-04</div>
+                            <div class="t-title">IpThrottleFilter + AbuseDetectionFilter</div>
+                            <div class="t-badge tb-sec">SECURITY</div>
+                        </div>
+                        <div class="t-body">
+                            <div class="t-ac">
+                                <ul>
+                                    <li>IpThrottle: Redis INCR <code>ip:throttle:{ip}:{window}</code>. Hard block at
+                                        200/min, abuse signal at 500/min.
+                                    </li>
+                                    <li>X-Forwarded-For parsing: take LAST IP in chain (prevents spoofing via proxy).
+                                    </li>
+                                    <li>AbuseDetection: reads <code>abuse:score:{tenantId}</code>. Score 50-79 →
+                                        override plan to FREE. Score 80+ → 403.
+                                    </li>
+                                    <li>SecurityEventService: write to <code>security_events</code> table on every
+                                        block/flag.
+                                    </li>
+                                    <li>Test: simulate 600 requests/min from same IP → IP blocked. Score >80 on tenant →
+                                        403 on next request.
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ticket">
+                        <div class="t-hdr">
+                            <div class="t-id">FS-P2-05</div>
+                            <div class="t-title">JobController — submit + status + cancel</div>
+                            <div class="t-badge tb-feat">FEATURE</div>
+                        </div>
+                        <div class="t-body">
+                            <div class="t-ac">
+                                <ul>
+                                    <li>POST validates payload (Bean Validation). Sets priority from TenantContext plan.
+                                        Inserts to DB. Publishes job_id to SQS. Returns 202.
+                                    </li>
+                                    <li>GET /jobs/{id}: tenant-scoped (403 if different tenant). Returns full job
+                                        status.
+                                    </li>
+                                    <li>GET /jobs: paginated query with status/type filters. Uses <code>idx_jobs_tenant_status</code>
+                                        index.
+                                    </li>
+                                    <li>All response shapes match API spec exactly. RestAssured tests cover all status
+                                        codes.
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="phase-milestone">Phase 2 milestone: Full filter chain working end-to-end. k6 rate limit
+                        test: 0% false-allows at 500 VUs. Race condition idempotency test passes. Security events appear
+                        in DB when IP throttled.
+                    </div>
+                </div>
+            </div>
+
+            <!-- PHASE 3 -->
+            <div class="phase">
+                <div class="phase-hdr">
+                    <div class="ph-n">3</div>
+                    <div class="ph-meta">
+                        <div class="ph-title">Processor — Worker Infrastructure + Reliability</div>
+                        <div class="ph-desc">SQS consumer · SKIP LOCKED workers · Retry+backoff · Watchdog · Heartbeat ·
+                            Graceful shutdown
+                        </div>
+                    </div>
+                    <div class="ph-dur">Week 4–5</div>
+                </div>
+                <div class="phase-body">
+                    <div class="ticket">
+                        <div class="t-hdr">
+                            <div class="t-id">FS-P3-01</div>
+                            <div class="t-title">SqsJobConsumer + WorkerOrchestrator</div>
+                            <div class="t-badge tb-feat">FEATURE</div>
+                        </div>
+                        <div class="t-body">
+                            <div class="t-ac">
+                                <ul>
+                                    <li><code>@SqsListener</code> receives job_id. Fetches full job from DB (SQS is
+                                        trigger only, DB is source of truth).
+                                    </li>
+                                    <li>JPQL query with <code>FOR UPDATE SKIP LOCKED ORDER BY priority ASC,
+                                        visible_after ASC LIMIT 1</code>.
+                                    </li>
+                                    <li>Claims job: sets <code>locked_by=workerId, locked_until=now()+30s</code> in same
+                                        transaction as SELECT.
+                                    </li>
+                                    <li><strong>Concurrent test (Testcontainers):</strong> 5 workers, 5 jobs → each
+                                        worker claims exactly 1. No duplicate claims.
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ticket">
+                        <div class="t-hdr">
+                            <div class="t-id">FS-P3-02</div>
+                            <div class="t-title">Retry + Backoff + Dead-Letter + HeartbeatService</div>
+                            <div class="t-badge tb-feat">FEATURE</div>
+                        </div>
+                        <div class="t-body">
+                            <div class="t-ac">
+                                <ul>
+                                    <li>On failure: <code>visible_after = now() + clamp(2^attempt × 1000, 1000, 30000) +
+                                        random(0,1000)</code> ms.
+                                    </li>
+                                    <li>FatalException → skip to DEAD immediately (no retries). RetryableException →
+                                        normal backoff.
+                                    </li>
+                                    <li>HeartbeatService: per-worker thread, every 20s: <code>UPDATE jobs SET
+                                        locked_until=now()+30s WHERE id=? AND locked_by=?</code>. CAS prevents heartbeat
+                                        extending lock after watchdog recovery.
+                                    </li>
+                                    <li>Test: handler that throws RetryableException 3 times → job reaches DEAD after
+                                        max_attempts. Handler that throws FatalException once → DEAD immediately.
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ticket">
+                        <div class="t-hdr">
+                            <div class="t-id">FS-P3-03</div>
+                            <div class="t-title">WatchdogScheduler + ReconcilerScheduler + Graceful Shutdown</div>
+                            <div class="t-badge tb-infra">INFRA</div>
+                        </div>
+                        <div class="t-body">
+                            <div class="t-ac">
+                                <ul>
+                                    <li>Watchdog (10s): CAS UPDATE recovers stale locks. Priority aging: decrement
+                                        priority every 60s for long-waiting jobs.
+                                    </li>
+                                    <li>Reconciler (5min): finds QUEUED jobs older than 5min with no SQS evidence →
+                                        republishes to SQS. Guards against FM-4 (network partition) and FM-6 (SQS
+                                        outage).
+                                    </li>
+                                    <li>Graceful shutdown: <code>@PreDestroy</code> sets <code>shuttingDown=true</code>.
+                                        Workers finish current job. Wait up to 60s. Then JVM exits.
+                                    </li>
+                                    <li><strong>Crash test:</strong> Kill JVM mid-execution → restart → watchdog
+                                        recovers within 10s → job re-executes.
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="phase-milestone">Phase 3 milestone: Submit 100 jobs via Gateway → all reach DONE. Kill
+                        Processor mid-run → restart → all jobs recover. FatalException jobs go DEAD immediately (not
+                        after 3 retries).
+                    </div>
+                </div>
+            </div>
+
+            <!-- PHASE 4 -->
+            <div class="phase">
+                <div class="phase-hdr">
+                    <div class="ph-n">4</div>
+                    <div class="ph-meta">
+                        <div class="ph-title">Observability + Load Tests + Real Numbers</div>
+                        <div class="ph-desc">All Micrometer metrics · CloudWatch integration · 3 k6 load tests · Your
+                            resume numbers
+                        </div>
+                    </div>
+                    <div class="ph-dur">Week 6</div>
+                </div>
+                <div class="phase-body">
+                    <div class="ticket">
+                        <div class="t-hdr">
+                            <div class="t-id">FS-P4-01</div>
+                            <div class="t-title">All Micrometer metrics + Spring Actuator</div>
+                            <div class="t-badge tb-infra">INFRA</div>
+                        </div>
+                        <div class="t-body">
+                            <div class="t-ac">
+                                <ul>
+                                    <li>All 15 metrics from Section 10 implemented with correct labels.</li>
+                                    <li><code>/actuator/prometheus</code> returns all metrics. Spot-check 5 metrics by
+                                        submitting a job and verifying counter increments.
+                                    </li>
+                                    <li>CloudWatch agent config: scrapes <code>/actuator/prometheus</code> every 60s on
+                                        EC2.
+                                    </li>
+                                    <li>CloudWatch dashboard: 4 widgets — request RPS, rate limit allow/deny ratio, job
+                                        queue depth by tenant, worker execution P99.
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ticket">
+                        <div class="t-hdr">
+                            <div class="t-id">FS-P4-02</div>
+                            <div class="t-title">k6 load tests — 3 scenarios, real numbers</div>
+                            <div class="t-badge tb-test">TEST</div>
+                        </div>
+                        <div class="t-body">
+                            <div class="t-ac">
+                                <strong>Run all 3. Screenshot results. These are your resume bullets.</strong>
+                                <ul>
+                                    <li><strong>Test 1 — Rate limit correctness:</strong> 500 VUs, FREE plan (10/min),
+                                        60s. Assert: exactly 10 jobs allowed per minute per tenant. False-allow rate:
+                                        target 0%.
+                                    </li>
+                                    <li><strong>Test 2 — Multi-tenant fairness:</strong> Tenant A (FREE, 200/min
+                                        hammer), Tenant B (PRO, steady 50/min), Tenant C (ENTERPRISE, steady 20/min).
+                                        Assert: ENTERPRISE P99 queue wait &lt;30s throughout. Measure: Tenant B and C
+                                        P99 degradation vs baseline (target &lt;10%).
+                                    </li>
+                                    <li><strong>Test 3 — Gateway throughput:</strong> ENTERPRISE tenant, no rate limit
+                                        hit, ramp 10→500 VUs. Find max sustainable RPS. Measure: P99 latency at peak.
+                                        Find the bottleneck (SQS publish? DB write?).
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="phase-milestone">Phase 4 milestone: 3 k6 reports saved as artifacts. CloudWatch
+                        dashboard live. You have real numbers for every resume bullet. This phase produces the evidence.
+                    </div>
+                </div>
+            </div>
+
+            <!-- PHASE 5 -->
+            <div class="phase">
+                <div class="phase-hdr">
+                    <div class="ph-n">5</div>
+                    <div class="ph-meta">
+                        <div class="ph-title">React Dashboard</div>
+                        <div class="ph-desc">Overview · Tenant Management · Security Events Feed · WebSocket live
+                            updates
+                        </div>
+                    </div>
+                    <div class="ph-dur">Week 7–8</div>
+                </div>
+                <div class="phase-body">
+                    <div class="ticket">
+                        <div class="t-hdr">
+                            <div class="t-id">FS-P5-01</div>
+                            <div class="t-title">Overview page — live traffic metrics</div>
+                            <div class="t-badge tb-feat">FEATURE</div>
+                        </div>
+                        <div class="t-body">
+                            <div class="t-ac">
+                                <ul>
+                                    <li>Recharts <code>LineChart</code>: RPS over last 5 minutes, polling every 5s via
+                                        TanStack Query.
+                                    </li>
+                                    <li>Stacked bar: allow vs deny ratio per tenant (top 5 tenants by volume).</li>
+                                    <li>Stat cards: total jobs submitted (today), active workers, average rate limit
+                                        overhead (ms), dead jobs (today).
+                                    </li>
+                                    <li>Responsive layout. TailwindCSS. Dark mode toggle.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ticket">
+                        <div class="t-hdr">
+                            <div class="t-id">FS-P5-02</div>
+                            <div class="t-title">Tenant Management + Security Events</div>
+                            <div class="t-badge tb-feat">FEATURE</div>
+                        </div>
+                        <div class="t-body">
+                            <div class="t-ac">
+                                <ul>
+                                    <li>Tenant table: name, plan, quota usage (used/limit), abuse score, active status.
+                                        Inline plan change dropdown.
+                                    </li>
+                                    <li>Create tenant modal: name → generates API key (shown once). Copy button. Never
+                                        shown again.
+                                    </li>
+                                    <li>Security Events feed: WebSocket (SockJS+STOMP) subscription to <code>/topic/security-events</code>.
+                                        Live stream as events fire. Filter by event_type. Shows: IP throttled, rate
+                                        limited, abuse blocked, idempotency duplicate.
+                                    </li>
+                                    <li>IP block button on security events: calls <code>POST
+                                        /api/v1/admin/security/block-ip</code>.
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="phase-milestone">Phase 5 milestone: Run k6 attack simulation → security events appear in
+                        real-time on dashboard. Create a tenant → API key shown → use it to submit a job → see job
+                        metrics on Overview page.
+                    </div>
+                </div>
+            </div>
+
+            <!-- PHASE 6 -->
+            <div class="phase">
+                <div class="phase-hdr">
+                    <div class="ph-n">6</div>
+                    <div class="ph-meta">
+                        <div class="ph-title">AWS Deployment + CI/CD + Live URL</div>
+                        <div class="ph-desc">EC2 × 2 · RDS · ElastiCache · SQS · S3+CloudFront · CodeDeploy pipeline
+                        </div>
+                    </div>
+                    <div class="ph-dur">Week 9–10</div>
+                </div>
+                <div class="phase-body">
+                    <p style="font-size:13px;color:var(--mid);margin-bottom:14px;max-width:none;">See Section 13 for
+                        full AWS architecture and step-by-step deployment guide. The milestone for this phase: a live
+                        URL you can put in your resume that stays up 24/7 on AWS free tier.</p>
+                    <div class="ticket">
+                        <div class="t-hdr">
+                            <div class="t-id">FS-P6-01</div>
+                            <div class="t-title">GitHub Actions CI pipeline — test + build + push to S3</div>
+                            <div class="t-badge tb-infra">INFRA</div>
+                        </div>
+                        <div class="t-body">
+                            <div class="t-ac">
+                                <ul>
+                                    <li>On PR: <code>./gradlew test :flowshield-gateway:test
+                                        :flowshield-processor:test</code>. Block merge if tests fail.
+                                    </li>
+                                    <li>On push to main: <code>./gradlew bootJar</code> for both modules. Upload JARs to
+                                        S3 bucket. Trigger CodeDeploy deployment. Build React dashboard, sync to S3
+                                        static bucket, invalidate CloudFront cache.
+                                    </li>
+                                    <li>Deploy takes ~4 minutes end-to-end. Zero-downtime via CodeDeploy rolling
+                                        deploy.
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ticket">
+                        <div class="t-hdr">
+                            <div class="t-id">FS-P6-02</div>
+                            <div class="t-title">README + Architecture diagram + Benchmark table</div>
+                            <div class="t-badge tb-test">DOCS</div>
+                        </div>
+                        <div class="t-body">
+                            <div class="t-ac">
+                                <ul>
+                                    <li>README: 1-para what it is. Architecture diagram (Mermaid or ASCII). Quick-start
+                                        (<code>docker-compose up</code>). Benchmark table with real k6 numbers.
+                                    </li>
+                                    <li>"Design Decisions" section: 5 bullets — each a tradeoff you made (Postgres over
+                                        Kafka, Token Bucket over Sliding Window, SQS over Redis queue, etc.).
+                                    </li>
+                                    <li>Live demo link prominent at top. "Try it" section with curl examples using the
+                                        demo API key.
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="phase-milestone">Phase 6 milestone: Push to main → GitHub Actions deploys automatically
+                        → live URL shows dashboard → curl to API endpoint → 202 Accepted. The project is live.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════
+         S13 — AWS DEPLOYMENT
+    ═══════════════════════════════════════════════════ -->
+    <section class="sec" id="s13">
+        <div class="sec-eye">Section 13</div>
+        <div class="sec-title">AWS Deployment Architecture — Free Tier Strategy</div>
+        <div class="sec-sub">Live URL for your resume. AWS on your CV. Free for 12 months. Step-by-step.</div>
+
+        <div class="callout info">
+            <strong>Free tier reality check:</strong> ElastiCache is NOT in AWS free tier. RDS PostgreSQL t2.micro IS
+            free. EC2 t2.micro IS free (750 hours/month). S3 + CloudFront IS free (5GB + 1TB transfer). SQS IS free (1M
+            requests/month). <strong>Total cost: ~$15/month</strong> (one t3.micro for Redis, everything else free).
+            After 12 months free tier expires: ~$25–35/month total. Budget this before starting.
+        </div>
+
+        <div class="aws-tier">
+            <div class="aws-card">
+                <div class="aws-service">Compute</div>
+                <div class="aws-name">EC2 Gateway</div>
+                <div class="aws-spec">t2.micro (free tier)</div>
+                <div class="aws-note">Runs <code>flowshield-gateway.jar</code>. Spring Boot on port 8080. Behind ALB.
+                    Auto-start via systemd service.
+                </div>
+                <div class="aws-cost">Free tier: 750h/mo</div>
+            </div>
+            <div class="aws-card">
+                <div class="aws-service">Compute</div>
+                <div class="aws-name">EC2 Processor</div>
+                <div class="aws-spec">t2.micro (free tier)</div>
+                <div class="aws-note">Runs <code>flowshield-processor.jar</code>. No HTTP port (background service
+                    only). SQS consumer + workers.
+                </div>
+                <div class="aws-cost">Free tier: 750h/mo</div>
+            </div>
+            <div class="aws-card">
+                <div class="aws-service">Database</div>
+                <div class="aws-name">RDS PostgreSQL</div>
+                <div class="aws-spec">db.t2.micro (free tier)</div>
+                <div class="aws-note">20GB SSD storage (free). Multi-AZ disabled (free tier). Automated backups: 7 days.
+                    Single-AZ acceptable for portfolio.
+                </div>
+                <div class="aws-cost">Free tier: 750h/mo</div>
+            </div>
+            <div class="aws-card">
+                <div class="aws-service">Cache</div>
+                <div class="aws-name">Redis on EC2</div>
+                <div class="aws-spec">t3.micro (~$8/mo)</div>
+                <div class="aws-note">Self-hosted Redis 7 on a separate t3.micro. Not ElastiCache (not in free tier).
+                    systemd service with <code>redis-server /etc/redis.conf</code>.
+                </div>
+                <div class="aws-cost">~$8/month</div>
+            </div>
+            <div class="aws-card">
+                <div class="aws-service">Queue</div>
+                <div class="aws-name">AWS SQS FIFO</div>
+                <div class="aws-spec">Free tier</div>
+                <div class="aws-note">1M requests/month free. Queue: <code>flowshield-jobs.fifo</code>. Message
+                    deduplication ID = job idempotency key. Visibility timeout: 60s.
+                </div>
+                <div class="aws-cost">Free tier: 1M req/mo</div>
+            </div>
+            <div class="aws-card">
+                <div class="aws-service">Frontend</div>
+                <div class="aws-name">S3 + CloudFront</div>
+                <div class="aws-spec">Free tier</div>
+                <div class="aws-note">React build → S3 bucket (static website). CloudFront distribution with custom
+                    domain. HTTPS via ACM certificate (free). CDN URL: <code>https://dashboard.flowshield.dev</code>
+                </div>
+                <div class="aws-cost">Free tier: 5GB + 1TB</div>
+            </div>
+            <div class="aws-card">
+                <div class="aws-service">API Gateway</div>
+                <div class="aws-name">ALB</div>
+                <div class="aws-spec">~$16/month</div>
+                <div class="aws-note">Application Load Balancer. Health checks on <code>/actuator/health</code>. HTTPS
+                    termination. Routes to EC2 Gateway. <strong>Optional</strong>: skip ALB, use EC2 public IP directly
+                    to save $16/mo for portfolio.
+                </div>
+                <div class="aws-cost">~$16/month (optional)</div>
+            </div>
+            <div class="aws-card">
+                <div class="aws-service">CI/CD</div>
+                <div class="aws-name">CodeDeploy + S3</div>
+                <div class="aws-spec">Free</div>
+                <div class="aws-note">JARs uploaded to S3 deployment bucket by GitHub Actions. CodeDeploy agent on EC2
+                    pulls and restarts. <code>appspec.yml</code> defines before/after hooks for zero-downtime.
+                </div>
+                <div class="aws-cost">Free</div>
+            </div>
+        </div>
+
+        <p style="margin-top:24px;"><strong>Deployment Architecture Diagram</strong></p>
+        <div class="diagram">
+<pre>
+<span class="d-c">// ── AWS PRODUCTION ARCHITECTURE ─────────────────────────────────────────── //</span>
+
+  <span class="d-g">Internet</span>
+     │
+     ▼
+<span class="d-n">  [Route 53]</span>                    api.flowshield.dev → EC2 Gateway public IP
+  <span class="d-n">[CloudFront]</span>                   dashboard.flowshield.dev → S3 static bucket
+     │
+     ▼
+<span class="d-n">  EC2 Gateway (t2.micro, AZ-1a)</span>
+  <span class="d-n">  ├── flowshield-gateway.jar (systemd: flowshield-gateway.service)</span>
+  <span class="d-n">  ├── Port 8080 (HTTP, behind Nginx reverse proxy on 443)</span>
+  <span class="d-n">  └── Nginx handles SSL termination (Let's Encrypt cert via certbot)</span>
+          │                          │                    │
+          ▼                          ▼                    ▼
+  <span class="d-y">RDS PostgreSQL</span>             <span class="d-b">Redis (t3.micro EC2)</span>    <span
+        class="d-p">AWS SQS FIFO</span>
+  db.t2.micro                Private subnet           flowshield-jobs.fifo
+  Private subnet             Port 6379                Standard: 3K msg/sec
+  SG: allow 5432 from        SG: allow 6379 from      Free tier: 1M req/mo
+  EC2 security group         EC2 security group
+          │                                                    │
+          └───────────────────────────────────────────────────┘
+                                                               │ consume
+                                                               ▼
+  <span class="d-n">EC2 Processor (t2.micro, AZ-1a)</span>
+  <span class="d-n">  ├── flowshield-processor.jar (systemd: flowshield-processor.service)</span>
+  <span class="d-n">  ├── No inbound port (background service only)</span>
+  <span class="d-n">  └── Connects to: same RDS instance, same Redis instance, same SQS</span>
+
+<span class="d-c">// ── DEPLOYMENT PIPELINE ─────────────────────────────────────────────────── //</span>
+
+  <span class="d-g">Developer pushes to main</span>
+     │
+     ▼ GitHub Actions (ci.yml + deploy.yml)
+     ├── Run all tests (Testcontainers)
+     ├── <span class="d-c">If pass:</span>
+     │   ├── ./gradlew :flowshield-gateway:bootJar
+     │   ├── ./gradlew :flowshield-processor:bootJar
+     │   ├── Upload both JARs to S3://flowshield-deployments/
+     │   ├── Trigger AWS CodeDeploy deployment group "flowshield-gateway"
+     │   ├── Trigger AWS CodeDeploy deployment group "flowshield-processor"
+     │   ├── cd flowshield-dashboard && npm run build
+     │   ├── aws s3 sync dist/ s3://flowshield-dashboard/ --delete
+     │   └── aws cloudfront create-invalidation --distribution-id XXXX --paths "/*"
+     └── Slack notification: "✅ FlowShield deployed. Gateway: v1.2.3"
+</pre>
+        </div>
+
+        <div class="callout good">
+            <strong>The live URL story for your resume:</strong> "FlowShield is deployed on AWS (EC2 + RDS + SQS +
+            S3/CloudFront) with automated CI/CD via GitHub Actions and AWS CodeDeploy. Live at <code>https://api.flowshield.dev</code>
+            (gateway) and <code>https://dashboard.flowshield.dev</code> (React dashboard)." This sentence alone signals
+            AWS hands-on experience, CI/CD maturity, and that the project is real.
+        </div>
+
+        <p style="margin-top:20px;"><strong>One-time setup checklist (do this in order)</strong></p>
+        <div class="code" style="padding:20px 24px;font-size:11px;">
+<pre>
+<span class="c-cm"># 1. Create VPC + subnets (use default VPC for simplicity on free tier)</span>
+<span class="c-cm"># 2. Launch EC2 instances</span>
+aws ec2 run-instances --image-id ami-0abcdef1234567890 --instance-type t2.micro \
+  --key-name flowshield-key --security-group-ids sg-xxx --count 2 \
+  --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=flowshield-gateway},{Key=Name,Value=flowshield-processor}]'
+
+<span class="c-cm"># 3. Create RDS instance (free tier)</span>
+aws rds create-db-instance --db-instance-identifier flowshield-db \
+  --db-instance-class db.t2.micro --engine postgres --engine-version 16 \
+  --allocated-storage 20 --master-username flowshield --master-user-password XXXX \
+  --no-multi-az --no-publicly-accessible
+
+<span class="c-cm"># 4. Launch Redis EC2 (t3.micro), install Redis 7</span>
+sudo apt-get install redis-server && sudo systemctl enable redis-server
+
+<span class="c-cm"># 5. Create SQS FIFO queue</span>
+aws sqs create-queue --queue-name flowshield-jobs.fifo \
+  --attributes FifoQueue=true,ContentBasedDeduplication=false
+
+<span class="c-cm"># 6. Create S3 buckets</span>
+aws s3 mb s3://flowshield-deployments         <span class="c-cm"># JAR storage</span>
+aws s3 mb s3://flowshield-dashboard           <span class="c-cm"># React static files</span>
+aws s3 website s3://flowshield-dashboard --index-document index.html
+
+<span class="c-cm"># 7. Install CodeDeploy agent on both EC2 instances</span>
+<span class="c-cm"># (standard CodeDeploy agent install for Amazon Linux/Ubuntu)</span>
+
+<span class="c-cm"># 8. Set environment variables on EC2 (via AWS Parameter Store — never hardcode)</span>
+aws ssm put-parameter --name /flowshield/DB_URL --value "jdbc:postgresql://..." --type SecureString
+aws ssm put-parameter --name /flowshield/REDIS_HOST --value "172.x.x.x" --type String
+aws ssm put-parameter --name /flowshield/SQS_QUEUE_URL --value "https://sqs.us-east-1..." --type String
+
+<span class="c-cm"># 9. Create Route 53 hosted zone, add A record for api.flowshield.dev → EC2 IP</span>
+<span class="c-cm"># 10. Install Nginx + Certbot on Gateway EC2, configure SSL for api.flowshield.dev</span>
+</pre>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════
+         S14 — RESUME BULLETS
+    ═══════════════════════════════════════════════════ -->
+    <section class="sec" id="s14">
+        <div class="sec-eye">Section 14</div>
+        <div class="sec-title">Resume Bullets — Final Copy-Paste Version</div>
+        <div class="sec-sub">Fill your real k6 numbers. Every bullet is verifiable, specific, and passes ATS.</div>
+
+        <div style="border:2px solid var(--green);padding:32px 36px;background:var(--green-l);position:relative;margin:20px 0;">
+            <div style="position:absolute;top:-11px;left:20px;background:var(--green);color:#fff;font-family:'Fira Code',monospace;font-size:9px;letter-spacing:.18px;padding:2px 14px;font-weight:600;">
+                PROJECTS SECTION — COPY THESE
+            </div>
+            <div style="font-size:13.5px;line-height:1.85;color:var(--ink);padding:10px 0 10px 18px;border-left:3px solid var(--teal);margin-bottom:12px;">
+                Built <strong style="color:var(--teal);">FlowShield</strong>, a multi-tenant API gateway and distributed
+                job processing platform deployed on <strong style="color:var(--teal);">AWS (EC2, RDS, SQS, S3,
+                CloudFront)</strong> — enforcing per-tenant <strong style="color:var(--teal);">Token Bucket rate
+                limiting</strong> via atomic <strong style="color:var(--teal);">Redis Lua scripts</strong> with <strong
+                    style="color:var(--green);">0% false-allows under 500 concurrent submitters</strong>.
+            </div>
+            <div style="font-size:13.5px;line-height:1.85;color:var(--ink);padding:10px 0 10px 18px;border-left:3px solid var(--teal);margin-bottom:12px;">
+                Designed a <strong style="color:var(--teal);">5-layer security filter chain</strong> (IP throttling →
+                auth → abuse scoring → rate limit → idempotency) with fail-fast semantics; <strong
+                    style="color:var(--green);">P99 gateway latency under [X]ms</strong> on happy path with all 5
+                filters active.
+            </div>
+            <div style="font-size:13.5px;line-height:1.85;color:var(--ink);padding:10px 0 10px 18px;border-left:3px solid var(--teal);margin-bottom:12px;">
+                Implemented <strong style="color:var(--teal);">two-layer idempotency</strong> (Redis SETNX fast path +
+                PostgreSQL UNIQUE constraint fallback) — verified by Testcontainers race test: <strong
+                    style="color:var(--green);">50 concurrent duplicate submissions → exactly 1 job created</strong>.
+            </div>
+            <div style="font-size:13.5px;line-height:1.85;color:var(--ink);padding:10px 0 10px 18px;border-left:3px solid var(--teal);margin-bottom:12px;">
+                Built priority-weighted worker scheduler with <strong style="color:var(--teal);">SELECT FOR UPDATE SKIP
+                LOCKED</strong> and starvation prevention (priority aging) — under rogue-tenant burst (FREE plan at
+                20×), <strong style="color:var(--green);">ENTERPRISE P99 job wait time degraded &lt;[X]% vs
+                baseline</strong>.
+            </div>
+            <div style="font-size:13.5px;line-height:1.85;color:var(--ink);padding:10px 0 10px 18px;border-left:3px solid var(--teal);margin-bottom:12px;">
+                Designed fault-tolerant deployment with <strong style="color:var(--teal);">Redis circuit
+                breaker</strong> (FAIL_OPEN/CLOSED per job type), SQS orphan reconciler, worker heartbeat extension, and
+                watchdog CAS recovery — <strong style="color:var(--green);">zero jobs silently lost</strong> in
+                simulated crash and network partition tests.
+            </div>
+            <div style="font-size:13.5px;line-height:1.85;color:var(--ink);padding:10px 0 10px 18px;border-left:3px solid var(--teal);margin-bottom:0;">
+                Implemented security abuse scoring (0–100) with automatic plan degradation at score 50+ and tenant block
+                at 80+, writing to a <strong style="color:var(--teal);">React dashboard</strong> via <strong
+                    style="color:var(--teal);">WebSocket live feed</strong> — deployed to <strong
+                    style="color:var(--teal);">S3 + CloudFront</strong>. <strong>Live at <a href="#"
+                                                                                            style="color:var(--teal);">api.flowshield.dev</a></strong>.
+            </div>
+        </div>
+
+        <div class="callout warn">
+            <strong>Before you apply anywhere:</strong> Fill the bracketed numbers with your actual k6 test output. "P99
+            latency under [X]ms" where X is your real measurement. Any real number — even a modest one — is stronger
+            than leaving brackets. A recruiter who asks "how did you measure that?" and gets "I have a k6 report" closes
+            the loop. A recruiter who gets a vague answer assumes you made it up.
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    FlowShield v2.0 — Complete Engineering Document<br>
+    Sections: System Boundaries · HLD · LLD · Tech Stack (9 choices with tradeoffs) · Data Model · API Design · Scale
+    Analysis (10K RPS math) · Failure Modes (6 deep dives) · Security Layer · RED Observability · Monorepo Structure · 6
+    Implementation Phases · AWS Free Tier Deployment · Resume Bullets<br>
+    Stack: Java 17 · Spring Boot 3.2 · PostgreSQL 16 · Redis 7 · AWS SQS · React 18 · Vite · TailwindCSS · AWS
+    EC2/RDS/S3/CloudFront/CodeDeploy · GitHub Actions · Micrometer · Testcontainers · k6<br>
+    Mentor feedback addressed: Clear system boundary · Scale math · Failure mode depth · Security layer · Multi-instance
+    coordination · Observability RED metrics
+</footer>
+
+<script>
+const secs = document.querySelectorAll('.sec[id]');
+const navs = document.querySelectorAll('.sbn');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const id = e.target.id;
+      navs.forEach(n => n.classList.toggle('active', n.getAttribute('href') === '#'+id));
+    }
+  });
+}, { rootMargin: '-5% 0px -80% 0px' });
+secs.forEach(s => obs.observe(s));
+
+</script>
+</body>
+</html>

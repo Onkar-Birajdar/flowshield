@@ -1,0 +1,23 @@
+# Maven build output
+target/
+
+# class files
+*.class
+
+# Gradle build output
+build/
+.gradle/
+
+# application.properties
+*.properties
+
+# archives
+*.jar
+*.war
+*.ear
+
+# AI configuration
+claude_plan.txt
+
+# VS Code
+.vscode/
