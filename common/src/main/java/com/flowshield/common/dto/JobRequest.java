@@ -8,9 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class JobRequest {
-
     private String jobType;
     private String payload;
-    private String idempotencyKey;
-
 }

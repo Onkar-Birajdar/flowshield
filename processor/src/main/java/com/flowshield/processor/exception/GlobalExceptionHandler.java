@@ -1,10 +1,11 @@
-package com.flowshield.gateway.exception;
+package com.flowshield.processor.exception;
 
-import com.flowshield.common.dto.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.flowshield.common.dto.ErrorResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -17,7 +18,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneralError(Exception ex) {
-        ErrorResponse error = new ErrorResponse("INTERNAL_ERROR", "Something went wrong!");
+        ErrorResponse error = new ErrorResponse("INTERNAL_ERROR", "Something went wrong");
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }
 }

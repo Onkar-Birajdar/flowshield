@@ -1,6 +1,8 @@
-package com.flowshield.gateway.model;
+package com.flowshield.processor.model;
 
 import java.time.LocalDateTime;
+
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.domain.Persistable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,13 +15,34 @@ import com.flowshield.common.dto.JobStatus;
 @Entity
 @Table(name = "jobs")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
+@DynamicUpdate
 public class Job implements Persistable<String> {
 
     @Id
     private String jobId;
+
+    @Transient
+    private boolean isNewEntity = true;
+
+    @Override
+    public boolean isNew() {
+        return isNewEntity;
+    }
+
+    @Override
+    public String getId() {
+        return jobId;
+    }
+
+    @PostLoad
+    @PostPersist
+    void markNotNew() {
+        this.isNewEntity = false;
+    }
+
     private String jobType;
     private String payload;
     @Enumerated(EnumType.STRING)
@@ -29,22 +52,10 @@ public class Job implements Persistable<String> {
     private String lockedBy;
     private LocalDateTime lockedUntil;
     private LocalDateTime createdAt;
+    @Version
+    private Long version;
     private Integer attemptCount = 0;
     private Integer maxAttempts = 3;
     private String lastError;
     private LocalDateTime visibleAfter;
-    @Version
-    private Long version;
-
-    @Override
-    public String getId() {
-        return jobId;
-    }
-
-    @Override
-    @Transient
-    public boolean isNew() {
-        return true;
-    }
-
 }
